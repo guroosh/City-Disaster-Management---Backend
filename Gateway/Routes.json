@@ -1,0 +1,30 @@
+{
+  "authenticationRoute": {
+    "url": ""
+  },
+  "serviceRoutes": [
+
+    {
+      "endpoint": "loginService",
+      "key": "",
+      "url": "login"
+    },
+    {
+      "endpoint": "ds",
+      "key": "YzgwNDIzNGUzNzY0MzNkN2IyMDc0NmFkNmUzNjVlMmRiMTBmMDNmNTI3ZTEzZTBjNzQ5ZWNmZGY0YWNjNDU4YQ==",
+      "url": "http://localhost:7762"
+    },
+    {
+      "endpoint": "rs",
+      "key": "MzgzNmYwMWM4NDM3MTgxN2Q2YjViODMxOTkxZjE5MzNmMTdkYTgyNTUwYmQyMjY3YjY3ZmMzNjI2M2E0MzNkMQ==",
+      "url": "http://localhost:7763"
+    }
+  ],
+  "viewRoutes": [
+    {
+      "endpoint": "",
+      "key": "",
+      "url": ""
+    }
+  ]
+}

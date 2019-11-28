@@ -16,17 +16,22 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RSCD.Model.Configration;
 using RSCD.Mqtt;
+using RSCD;
+using Disaster.DataEntry.DataAccess.Context;
+using RSCD.Middleware;
 
 namespace Disaster
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostEnvironment hostEnvironment,IConfiguration configuration)
         {
             Configuration = configuration;
+            _hostEnvoirment = hostEnvironment.EnvironmentName;
         }
 
         public IConfiguration Configuration { get; }
+        private string _hostEnvoirment;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -38,12 +43,8 @@ namespace Disaster
                 options.SuscribeTopic = "RSCD/Disaster/#";
             });
 
-            services.Configure<DB_Settings>(options =>
-            {
-                options.DE_ConnectionString = "";
-                options.DE_DataBase = "";
-            });
-
+            services.AddModuleConfigurations(Configuration, _hostEnvoirment);
+            services.AddScoped<DB_Context>();
             services.AddHostedService<MqttSubscriber>();
             services.AddScoped<MqttPublisher>();
             services.AddScoped<DisasterReport_BL>();
@@ -54,11 +55,7 @@ namespace Disaster
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
+            app.UseMiddleware<AuthenticationMiddleware>();
             app.UseMvc();
         }
     }
