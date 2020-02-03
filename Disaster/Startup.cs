@@ -1,24 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Disaster.BusinessLogic;
-using Disaster.DataAccess.Manager;
 using Disaster.DataAccess.Repository;
 using Disaster.Mqtt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using RSCD.Model.Configration;
 using RSCD.Mqtt;
 using RSCD;
-using Disaster.DataEntry.DataAccess.Context;
 using RSCD.Middleware;
+using Disaster.DataAccess.Context;
+using Disaster.DataAccess.Manager;
 
 namespace Disaster
 {
@@ -39,7 +32,7 @@ namespace Disaster
             services.Configure<Mqtt_Settings>(options =>
             {
                 options.ClientId = "RSCD_DisasterModule";
-                options.Host = "10.6.38.181";
+                options.Host = "10.6.42.165";
                 options.SuscribeTopic = "RSCD/Disaster/#";
             });
 

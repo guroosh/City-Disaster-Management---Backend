@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RSCD.Models.API;
+using Gateway.BusinessLogic;
+using Gateway.Model.API;
 
 namespace Gateway.Controllers
 {
@@ -12,6 +14,12 @@ namespace Gateway.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
+        private readonly Login_BL _businessLogic;
+
+        public LoginController(Login_BL businessLogic)
+        {
+            _businessLogic = businessLogic;
+        }
 
         [Route("test")]
         [HttpGet]
@@ -22,9 +30,11 @@ namespace Gateway.Controllers
 
         [Route("login")]
         [HttpPost]
-        public ActionResult UserLogin()
+        public Task<IActionResult> Login(LoginRequest request)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
+
+        
     }
 }

@@ -9,7 +9,7 @@ using RSCD.Models.API;
 
 namespace Registration.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class RegistrationController : ControllerBase
     {

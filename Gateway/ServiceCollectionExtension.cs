@@ -42,7 +42,7 @@ namespace Gateway
             return services;
         }
 
-        public static IServiceCollection AddMongoSerivces(this IServiceCollection services)
+        public static IServiceCollection AddMongoServices(this IServiceCollection services)
         {
             services.AddScoped<DB_Context>();
             return services;

@@ -17,18 +17,18 @@ namespace Gateway.Handlers.Managers
 
         public async Task<HttpResponseMessage> SendRequest(HttpRequest request, Route endpoint)
         {
-            Console.WriteLine("->Reached Request redirect manager");
+            Console.WriteLine("->Reached Request redirect manager"); 
 
             Stream requestStream = request.Body;
-            StreamReader streamReader = new StreamReader(requestStream, Encoding.UTF8);
-            string requestContent = streamReader.ReadToEnd();
+            StreamReader streamReader = new StreamReader(requestStream);
+            string requestContent = await streamReader.ReadToEndAsync();
 
             HttpRequestMessage redirectRequest = new HttpRequestMessage()
             {
                 Method = new HttpMethod(request.Method),
                 Version = new Version("2.0"),
                 RequestUri = new Uri(endpoint.Url),
-                Content = new StringContent(requestContent,Encoding.UTF8, request.ContentType)    
+                Content = new StringContent(requestContent,Encoding.UTF8, "application/json")    
             };
 
             redirectRequest.Headers.Add(tokenKey, endpoint.Key);

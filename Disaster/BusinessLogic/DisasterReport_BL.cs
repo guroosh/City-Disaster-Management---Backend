@@ -53,9 +53,14 @@ namespace Disaster.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateDocumentAsync(object request)
+        public async Task<bool> UpdateDocumentAsync(object request)
         {
-            throw new NotImplementedException();
+            VerifiedDisasterRequest request_ = (VerifiedDisasterRequest)request;
+            ReportedDisaster employee = await DisasterCollection.GetAsync(request_.ReferenceId);
+            var copier = new ClassValueCopier();
+            var newEmployee = copier.ConvertAndCopy(request_, employee);
+            newEmployee.EditedBy = request_.VerifiedBy;
+            return await DisasterCollection.UpdateAsync(newEmployee);
         }
     }
 }

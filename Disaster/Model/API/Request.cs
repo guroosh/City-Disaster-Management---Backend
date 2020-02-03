@@ -15,7 +15,7 @@ namespace Disaster.Model.API
 
     public class VerifyDisasterRequest
     {
-        public string DisasterId { get; set; }
+        public string ReferenceId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string ReportedTime { get; set; }
@@ -24,10 +24,13 @@ namespace Disaster.Model.API
 
     public class VerifiedDisasterRequest
     {
-        public string DisasterId { get; set; }
+        public string ReferenceId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string VerifiedTime { get; set; }
         public string VerifiedBy { get; set; }
+        public bool IsInfoTrue { get; set; }
+        public double Radius { get; set; }
+
     }
 }

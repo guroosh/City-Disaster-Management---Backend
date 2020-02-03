@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Disaster.BusinessLogic;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client.Receiving;
 using RSCD.Model.Configration;
 using RSCD.MQTT;
+using Newtonsoft.Json;
+using Disaster.Model.API;
 
 namespace Disaster.Mqtt
 {
@@ -19,7 +23,28 @@ namespace Disaster.Mqtt
             Client.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate(e => {
 
                 var data = e.ApplicationMessage.ConvertPayloadToString();
+                var topic = e.ApplicationMessage.Topic;
+
                 Console.WriteLine($"Topic is {e.ApplicationMessage.Topic} \n{data}");
+
+                try
+                {
+                    if (topic == "RSCD/Disaster/Verfied")
+                    {
+                        using (IServiceScope scope = serviceProvider.CreateScope())
+                        {
+                            // pass it to the handler class
+                            var bl = scope.ServiceProvider.GetRequiredService<DisasterReport_BL>();
+                            var disasterdData = JsonConvert.DeserializeObject<VerifiedDisasterRequest>(data);
+                            var result = bl.UpdateDocumentAsync(disasterdData);
+                        }
+                    }
+                }
+                catch
+                {
+
+                }
+
             });
 
             //ConnectMqqt();
