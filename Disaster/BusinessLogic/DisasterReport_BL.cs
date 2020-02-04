@@ -59,7 +59,7 @@ namespace Disaster.BusinessLogic
             ReportedDisaster employee = await DisasterCollection.GetAsync(request_.ReferenceId);
             var copier = new ClassValueCopier();
             var newEmployee = copier.ConvertAndCopy(request_, employee);
-            newEmployee.EditedBy = request_.VerifiedBy;
+            newEmployee.LastUpdatedBy = request_.VerifiedBy;
             return await DisasterCollection.UpdateAsync(newEmployee);
         }
     }

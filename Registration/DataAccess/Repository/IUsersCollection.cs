@@ -9,5 +9,6 @@ namespace Registration.DataAccess.Repository
 {
     public interface IUsersCollection : IDataRepository<Users>
     {
+        string _collectionCodePrefix { get; }
     }
 }

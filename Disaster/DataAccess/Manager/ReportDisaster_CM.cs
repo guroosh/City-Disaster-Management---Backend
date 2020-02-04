@@ -36,7 +36,7 @@ namespace Disaster.DataAccess.Manager
 
                 document.ReferenceId = _collectionCodePrefix + id.ToString();
                 document.CreatedAt = DateTime.Now.ToString();
-                document.EditedAt = "";
+                document.LastUpdatedAt = "";
                 document.IsActive = true;
                 await _context.ReportedDisasterCollection.InsertOneAsync(document);
                 return true;
@@ -73,7 +73,7 @@ namespace Disaster.DataAccess.Manager
         {
             try
             {
-                document.EditedAt = DateTime.Now.ToString();
+                document.LastUpdatedAt = DateTime.Now.ToString();
                 FilterDefinition<ReportedDisaster> filter = Builders<ReportedDisaster>.Filter.Eq(doc => doc.ReferenceId, document.ReferenceId);
                 var result = await _context.ReportedDisasterCollection.ReplaceOneAsync(filter, document);
                 return (result.IsAcknowledged && result.ModifiedCount > 0);

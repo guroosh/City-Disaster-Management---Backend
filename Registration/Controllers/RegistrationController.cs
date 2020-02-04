@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Registration.BusinessLogic;
 using Registration.Model.API;
 using RSCD.Models.API;
 
@@ -13,6 +14,12 @@ namespace Registration.Controllers
     [ApiController]
     public class RegistrationController : ControllerBase
     {
+        private readonly Registration_BL _businessLogic;
+        public RegistrationController(Registration_BL businessLogic)
+        {
+            _businessLogic = businessLogic;
+        }
+
         [Route("test")]
         [HttpGet]
         public ActionResult Test()
@@ -20,20 +27,26 @@ namespace Registration.Controllers
             return Ok(new ActionResponse(StatusCodes.Status200OK));
         }
 
-        [Route("addUser")]
+        [Route("registerCu")]
         [HttpPost]
-        public ActionResult AddUser(AddUserRequest request)
+        public async Task<IActionResult> RegisterCommonUser(RegisterCommonUserRequest request)
         {
-            return Ok();
-        }
+            ActionResponse response;
 
-        [Route("getUserDetails")]
-        [HttpPost]
-        public ActionResult GetUserDetails(UserDetailRquest rquest)
-        {
-            return Ok();
-        }
+            try
+            {
+                bool result = await _businessLogic.RegisterCommonUser(request);
+                response = (result) ? new ActionResponse(StatusCodes.Status200OK) : new ActionResponse(StatusCodes.Status422UnprocessableEntity);
 
+            }
+            catch (Exception ex)
+            {
+                response = new ActionResponse(StatusCodes.Status500InternalServerError);
+                response.StatusDescription += ex.Message.ToString();
+            }
+
+            return StatusCode(response.StatusCode, response);
+        }
 
     }
 }

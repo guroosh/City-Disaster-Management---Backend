@@ -6,29 +6,30 @@ using System.Threading.Tasks;
 
 namespace Registration.Model.API
 {
-    public class AddUserRequest
-    {
-        public string UserId { get; set; }
-        public string Password { get; set; }
-        public Name UserName { get; set; }
-        public string DateOfBirth { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string GovtIdNumber { get; set; }
-        public string Token { get; set; }
-        public string GovtIdType { get; set; }
-        public bool IsVolunteer { get; set; }
-        public string VolunteerType { get; set; }
-    }
-
     public class UserDetailRquest
     {
-
         public string UserId { get; set; }
 
     }
+    
+    public class RegisterCommonUserRequest
+    {
+        public Name Name { get; set; }
+        public string EmailId { get; set; }
+        public string Password { get; set; }
+        public string PhoneNumber { get; set; }
+        public string GovermentIdType { get; set; }
+        public string GovermentIdNumber { get; set; }
+        public bool IsVolunteering { get; set; }
+        public string VolunteeringField { get; set; }
+    }
 
-
-
-
+    public class RegisterAdminUserRequest
+    {
+        public Name Name { get; set; }
+        public string EmailId { get; set; }
+        public string Department { get; set; }
+        public string BadgeId { get; set; }
+        public string Role { get; set; }
+    }
 }

@@ -15,10 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Disaster\Disaster.csproj" />
     <ProjectReference Include="..\Gateway\Gateway.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Disaster\BusinessLogic\" />
+    <Folder Include="Disaster\DAL\" />
     <Folder Include="Registration\BusinessLogic\" />
   </ItemGroup>
 

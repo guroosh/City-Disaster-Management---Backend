@@ -7,5 +7,7 @@ namespace RSCD.Model.Custom
 {
     public class Name
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

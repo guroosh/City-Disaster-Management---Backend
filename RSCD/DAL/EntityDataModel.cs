@@ -10,9 +10,9 @@ namespace RSCD.DAL
     {
         public ObjectId Id { get; set; }
         public string CreatedBy { get; set; }
-        public string EditedBy { get; set; }
+        public string LastUpdatedBy { get; set; }
         public string CreatedAt { get; set; }
-        public string EditedAt { get; set; }
+        public string LastUpdatedAt { get; set; }
     }
 
     public class RSCDDataEntryModel : RSCDDataModel

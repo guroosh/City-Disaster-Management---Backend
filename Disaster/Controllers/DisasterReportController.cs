@@ -27,7 +27,7 @@ namespace Disaster.Controllers
 
         [Route("reportDisaster")]
         [HttpPost]
-        public async Task<ActionResult> ReportDisaster(ReportDisasterRequest request)
+        public async Task<IActionResult> ReportDisaster(ReportDisasterRequest request)
         {
             ActionResponse response;
             bool result = await _businessLogic.CreateAsync(request);
