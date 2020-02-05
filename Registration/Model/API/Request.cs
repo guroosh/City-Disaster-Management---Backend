@@ -32,4 +32,13 @@ namespace Registration.Model.API
         public string BadgeId { get; set; }
         public string Role { get; set; }
     }
+
+    public class UpdateVolunteeringPreferenceRequest
+    {
+        public bool IsVolunteering { get; set; }
+        public string VolunteeringField { get; set; }
+        public string CurrentUserCode { get; set; }
+        public string UserCode { get; set; }
+
+    }
 }

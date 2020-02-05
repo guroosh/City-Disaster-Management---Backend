@@ -59,5 +59,21 @@ namespace Registration.BusinessLogic
         {
             throw new NotImplementedException();
         }
+        public async Task<bool> UpdateVolunteeringPreferenceAsync(UpdateVolunteeringPreferenceRequest request)
+        {
+            //get the data
+            //update the data 
+            //push it to DB
+            var copier = new ClassValueCopier();
+            var olduser = await _usersCollection.GetAsync(request.UserCode);
+            var newuser = copier.ConvertAndCopy(request, olduser);
+            newuser.LastUpdatedBy = request.UserCode;
+            return await _usersCollection.UpdateAsync(newuser);
+        }
+
+
+    
+
+        }
     }
-}
+

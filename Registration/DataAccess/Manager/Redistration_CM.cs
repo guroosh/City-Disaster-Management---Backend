@@ -1,5 +1,6 @@
 ﻿using Registration.DataAccess.Repository;
 using Registration.DataEntry.DataAccess.Context;
+using Registration.Model.API;
 using Registration.Model.DB;
 using System;
 using System.Collections.Generic;
@@ -70,5 +71,6 @@ namespace Registration.DataAccess.Manager
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Registration.Model.DB;
+using Registration.Model.API;
 
 namespace Registration.DataAccess.Repository
 {

@@ -68,5 +68,22 @@ namespace Registration.Controllers
 
             return StatusCode(response.StatusCode, response);
         }
+        [Route("updateVp")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateVolunteeringPreference(UpdateVolunteeringPreferenceRequest request)
+        {
+            ActionResponse response;
+            try
+            {
+                bool result = await _businessLogic.UpdateVolunteeringPreferenceAsync(request);
+                response = (result) ? new ActionResponse(StatusCodes.Status200OK) : new ActionResponse(StatusCodes.Status422UnprocessableEntity);
+            }
+            catch (Exception ex)
+            {
+                response = new ActionResponse(StatusCodes.Status500InternalServerError);
+                response.StatusDescription += ex.Message.ToString();
+            }
+           return StatusCode(response.StatusCode, response);
+        }
     }
 }
