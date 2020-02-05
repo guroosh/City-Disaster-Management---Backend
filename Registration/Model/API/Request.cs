@@ -26,10 +26,32 @@ namespace Registration.Model.API
 
     public class RegisterAdminUserRequest
     {
+        public Name Name { get; set; } 
+        public string EmailId { get; set; }
+        public string Department { get; set; }
+        public string BadgeId { get; set; }
+        public string Role { get; set; }
+       
+    }
+
+    public class UpdateCommonUserRequest
+    {
+        public Name Name { get; set; }
+        public string EmailId { get; set; }
+        public string Password { get; set; }
+        public string PhoneNumber { get; set; }
+        public string GovermentIdType { get; set; }
+        public string GovermentIdNumber { get; set; }
+        public string ReferenceId{get; set; }
+    }
+
+    public class UpdateAdminUserRequest
+    {
         public Name Name { get; set; }
         public string EmailId { get; set; }
         public string Department { get; set; }
         public string BadgeId { get; set; }
         public string Role { get; set; }
+        public string ReferenceId{ get; set; }
     }
 }

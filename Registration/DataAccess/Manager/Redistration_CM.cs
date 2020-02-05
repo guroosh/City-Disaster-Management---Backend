@@ -40,7 +40,6 @@ namespace Registration.DataAccess.Manager
                 document.LastUpdatedAt = "";
                 document.LastUpdatedBy = "";
                 document.IsActive = true;
-              
                 await _context.UsersCollection.InsertOneAsync(document);
                 
                 return true;
@@ -68,7 +67,15 @@ namespace Registration.DataAccess.Manager
 
         public Task<bool> UpdateAsync(Users document)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _context.UsersCollection.InsertOneAsync(document);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

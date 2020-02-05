@@ -39,6 +39,28 @@ namespace Registration.BusinessLogic
             newUser.IsCommonUser = false;
             return await _usersCollection.AddAsync(newUser);
         }
+        
+        public async Task<bool> UpdateCommonUser(UpdateCommonUserRequest request)
+        {
+            var copier = new ClassValueCopier();
+            Users newUser = copier.ConvertAndCopy<Users, UpdateCommonUserRequest>(request);
+            newUser.LastUpdatedBy = request.ReferenceId;
+            newUser.LastUpdatedAt = DateTime.Now.ToString();
+            return await _usersCollection.UpdateAsync(newUser);
+        }
+
+
+        public async Task<bool> UpdateAdminUser(UpdateAdminUserRequest request)
+        {
+            //get the old doc
+            //update the old doc with the request
+            //update the db
+            var copier = new ClassValueCopier();
+            Users newUser = copier.ConvertAndCopy<Users, UpdateAdminUserRequest>(request);
+            newUser.LastUpdatedBy = request.ReferenceId;
+            newUser.LastUpdatedAt = DateTime.Now.ToString();
+            return await _usersCollection.UpdateAsync(newUser);
+        }
 
         public Task<bool> DeleteDocumentAsync(object request)
         {

@@ -68,5 +68,47 @@ namespace Registration.Controllers
 
             return StatusCode(response.StatusCode, response);
         }
+ 
+        [Route("updateCu")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateCommonUser(UpdateCommonUserRequest request)
+        {
+            ActionResponse response;
+
+            try
+            {
+                bool result = await _businessLogic.UpdateCommonUser(request);
+                response = (result) ? new ActionResponse(StatusCodes.Status200OK) : new ActionResponse(StatusCodes.Status422UnprocessableEntity);
+
+            }
+            catch (Exception ex)
+            {
+                response = new ActionResponse(StatusCodes.Status500InternalServerError);
+                response.StatusDescription += ex.Message.ToString();
+            }
+
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Route("updateAu")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateAdminUser(UpdateAdminUserRequest request)
+        {
+            ActionResponse response;
+
+            try
+            {
+                bool result = await _businessLogic.UpdateAdminUser(request);
+                response = (result) ? new ActionResponse(StatusCodes.Status200OK) : new ActionResponse(StatusCodes.Status422UnprocessableEntity);
+
+            }
+            catch (Exception ex)
+            {
+                response = new ActionResponse(StatusCodes.Status500InternalServerError);
+                response.StatusDescription += ex.Message.ToString();
+            }
+
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }
