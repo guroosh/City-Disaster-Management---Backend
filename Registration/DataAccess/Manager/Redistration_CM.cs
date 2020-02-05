@@ -41,7 +41,6 @@ namespace Registration.DataAccess.Manager
                 document.LastUpdatedAt = "";
                 document.LastUpdatedBy = "";
                 document.IsActive = true;
-              
                 await _context.UsersCollection.InsertOneAsync(document);
                 
                 return true;
