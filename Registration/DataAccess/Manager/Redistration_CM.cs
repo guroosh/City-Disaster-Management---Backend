@@ -67,15 +67,7 @@ namespace Registration.DataAccess.Manager
 
         public Task<bool> UpdateAsync(Users document)
         {
-            try
-            {
-                await _context.UsersCollection.InsertOneAsync(document);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            throw new NotImplementedException();
         }
     }
 }

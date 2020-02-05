@@ -42,7 +42,8 @@ namespace Registration.Model.API
         public string PhoneNumber { get; set; }
         public string GovermentIdType { get; set; }
         public string GovermentIdNumber { get; set; }
-        public string ReferenceId{get; set; }
+        public string UserCode{get; set; }
+        public string CurrentUserCode {get; set;}
     }
 
     public class UpdateAdminUserRequest
@@ -52,6 +53,7 @@ namespace Registration.Model.API
         public string Department { get; set; }
         public string BadgeId { get; set; }
         public string Role { get; set; }
-        public string ReferenceId{ get; set; }
+        public string UserCode{ get; set; }
+        public string CurrentUserCode {get; set;}
     }
 }

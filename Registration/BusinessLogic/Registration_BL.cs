@@ -42,9 +42,10 @@ namespace Registration.BusinessLogic
         
         public async Task<bool> UpdateCommonUser(UpdateCommonUserRequest request)
         {
+            Users oldUser = await _usersCollection.GetAsync(request.UserCode);
             var copier = new ClassValueCopier();
-            Users newUser = copier.ConvertAndCopy<Users, UpdateCommonUserRequest>(request);
-            newUser.LastUpdatedBy = request.ReferenceId;
+            Users newUser = copier.ConvertAndCopy<Users, UpdateCommonUserRequest>(request, oldUser);
+            newUser.LastUpdatedBy = request.CurrentUserCode;
             newUser.LastUpdatedAt = DateTime.Now.ToString();
             return await _usersCollection.UpdateAsync(newUser);
         }
@@ -55,9 +56,10 @@ namespace Registration.BusinessLogic
             //get the old doc
             //update the old doc with the request
             //update the db
+            Users oldUser = await _usersCollection.GetAsync(request.UserCode);
             var copier = new ClassValueCopier();
-            Users newUser = copier.ConvertAndCopy<Users, UpdateAdminUserRequest>(request);
-            newUser.LastUpdatedBy = request.ReferenceId;
+            Users newUser = copier.ConvertAndCopy<Users, UpdateAdminUserRequest>(request, oldUser);
+            newUser.LastUpdatedBy = request.CurrentUserCode;
             newUser.LastUpdatedAt = DateTime.Now.ToString();
             return await _usersCollection.UpdateAsync(newUser);
         }
