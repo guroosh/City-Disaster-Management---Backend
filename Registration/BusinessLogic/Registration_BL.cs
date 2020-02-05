@@ -32,6 +32,14 @@ namespace Registration.BusinessLogic
             return await _usersCollection.AddAsync(newUser);
         }
 
+        public async Task<bool> RegisterAdminUser(RegisterAdminUserRequest request)
+        {
+            var copier = new ClassValueCopier();
+            Users newUser = copier.ConvertAndCopy<Users, RegisterAdminUserRequest>(request);
+            newUser.IsCommonUser = false;
+            return await _usersCollection.AddAsync(newUser);
+        }
+
         public Task<bool> DeleteDocumentAsync(object request)
         {
             throw new NotImplementedException();

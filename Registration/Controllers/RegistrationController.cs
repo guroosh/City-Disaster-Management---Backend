@@ -48,5 +48,25 @@ namespace Registration.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [Route("registerAu")]
+        [HttpPost]
+        public async Task<IActionResult> RegisterAdminUser(RegisterAdminUserRequest request)
+        {
+            ActionResponse response;
+
+            try
+            {
+                bool result = await _businessLogic.RegisterAdminUser(request);
+                response = (result) ? new ActionResponse(StatusCodes.Status200OK) : new ActionResponse(StatusCodes.Status422UnprocessableEntity);
+
+            }
+            catch (Exception ex)
+            {
+                response = new ActionResponse(StatusCodes.Status500InternalServerError);
+                response.StatusDescription += ex.Message.ToString();
+            }
+
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }
