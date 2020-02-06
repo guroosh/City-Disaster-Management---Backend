@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using RSCD.DAL;
 using RSCD.Model.Configration;
 
-namespace Disaster.DataAccess.Context
+namespace Disasteris.DataAccess.Context
 {
     public class DB_Context : MongoContext
     {

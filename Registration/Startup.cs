@@ -14,6 +14,9 @@ using RSCD.MQTT;
 using RSCD;
 using Registration.DataEntry.DataAccess.Context;
 using RSCD.Middleware;
+using Registration.BusinessLogic;
+using Registration.DataAccess.Repository;
+using Registration.DataAccess.Manager;
 
 namespace Registration
 {
@@ -33,6 +36,8 @@ namespace Registration
         {
             services.AddModuleConfigurations(Configuration,_hostEnvoirment);
             services.AddScoped<DB_Context>();
+            services.AddScoped<Registration_BL>();
+            services.AddScoped<IUsersCollection,Redistration_CM>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
         }
 
