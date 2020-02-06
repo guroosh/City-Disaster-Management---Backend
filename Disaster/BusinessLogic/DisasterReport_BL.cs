@@ -56,11 +56,18 @@ namespace Disaster.BusinessLogic
         public async Task<bool> UpdateDocumentAsync(object request)
         {
             VerifiedDisasterRequest request_ = (VerifiedDisasterRequest)request;
-            ReportedDisaster employee = await DisasterCollection.GetAsync(request_.ReferenceId);
+            ReportedDisaster oldDisaster = await DisasterCollection.GetAsync(request_.ReferenceId);
             var copier = new ClassValueCopier();
-            var newEmployee = copier.ConvertAndCopy(request_, employee);
-            newEmployee.LastUpdatedBy = request_.VerifiedBy;
-            return await DisasterCollection.UpdateAsync(newEmployee);
+            var newDisaster = copier.ConvertAndCopy(request_, oldDisaster);
+            newDisaster.LastUpdatedBy = request_.VerifiedBy;
+            bool result = await DisasterCollection.UpdateAsync(newDisaster);
+            if (result)
+            {
+                VerifiedDisasterRequest verifiedDisaster = copier.ConvertAndCopy<VerifiedDisasterRequest, ReportedDisaster>(newDisaster);
+                string data = JsonConvert.SerializeObject(verifiedDisaster);
+                Mqtt.MqttPublish("RSCD/Server/Disaster/Verified", data);
+            }
+            return result;
         }
     }
 }
