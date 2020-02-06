@@ -110,6 +110,7 @@ namespace Registration.Controllers
 
             return StatusCode(response.StatusCode, response);
         }
+
         [Route("updateVp")]
         [HttpPost]
         public async Task<IActionResult> UpdateVolunteeringPreference(UpdateVolunteeringPreferenceRequest request)
@@ -126,6 +127,6 @@ namespace Registration.Controllers
                 response.StatusDescription += ex.Message.ToString();
             }
            return StatusCode(response.StatusCode, response);
-        }
+        } 
     }
 }

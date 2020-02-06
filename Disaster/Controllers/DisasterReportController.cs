@@ -34,5 +34,15 @@ namespace Disaster.Controllers
             response = new ActionResponse((result) ? StatusCodes.Status200OK : StatusCodes.Status500InternalServerError);
             return StatusCode(response.StatusCode, response);
         }
+
+        [Route("verifiedDisaster")]
+        [HttpPost]
+        public async Task<IActionResult> VerifiedDisaster(VerifiedDisasterRequest request)
+        {
+            ActionResponse response;
+            bool result = await _businessLogic.UpdateDocumentAsync(request);
+            response = new ActionResponse((result) ? StatusCodes.Status200OK : StatusCodes.Status500InternalServerError);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace Disaster.Model.API
         public string VerifiedBy { get; set; }
         public bool IsInfoTrue { get; set; }
         public double Radius { get; set; }
+        public string Scale { get; set; }
 
     }
 }

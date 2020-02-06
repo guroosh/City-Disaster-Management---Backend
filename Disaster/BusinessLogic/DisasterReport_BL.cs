@@ -27,7 +27,7 @@ namespace Disaster.BusinessLogic
             ReportDisasterRequest request_ = (ReportDisasterRequest)request;
             ClassValueCopier copier = new ClassValueCopier();
             ReportedDisaster newReport = copier.ConvertAndCopy<ReportedDisaster, ReportDisasterRequest>(request_);
-            newReport.CreatedBy = request_.ReportedBy;
+            newReport.CreatedBy = request_.ReportedBy;  //why this line, why not have the same name and let the copier do its work.
             bool result = await DisasterCollection.AddAsync(newReport);
             if(result)
             {
@@ -56,11 +56,18 @@ namespace Disaster.BusinessLogic
         public async Task<bool> UpdateDocumentAsync(object request)
         {
             VerifiedDisasterRequest request_ = (VerifiedDisasterRequest)request;
-            ReportedDisaster employee = await DisasterCollection.GetAsync(request_.ReferenceId);
+            ReportedDisaster oldDisaster = await DisasterCollection.GetAsync(request_.ReferenceId);
             var copier = new ClassValueCopier();
-            var newEmployee = copier.ConvertAndCopy(request_, employee);
-            newEmployee.LastUpdatedBy = request_.VerifiedBy;
-            return await DisasterCollection.UpdateAsync(newEmployee);
+            var newDisaster = copier.ConvertAndCopy(request_, oldDisaster);
+            newDisaster.LastUpdatedBy = request_.VerifiedBy;    //again why two names for one field
+            bool result = await DisasterCollection.UpdateAsync(newDisaster);
+            if (result)
+            {
+                VerifiedDisasterRequest verifiedDisaster = copier.ConvertAndCopy<VerifiedDisasterRequest, ReportedDisaster>(newDisaster);
+                string data = JsonConvert.SerializeObject(verifiedDisaster);
+                Mqtt.MqttPublish("RSCD/Server/Disaster/Verified", data);
+            }
+            return result;
         }
     }
 }
