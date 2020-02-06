@@ -6,7 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using RSCD.Helper;
 using Registration.Model.DB;
+using Registration.Model.API;
 using Registration.DataAccess.Repository;
+using RSCD.Models.API;
+using RSCD.Model.Custom.ExternalModel.Registration;
 
 namespace Registration.BusinessLogic
 {
@@ -74,9 +77,27 @@ namespace Registration.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Task<object> GetDocumentAsync(object request)
+        public async Task<object> GetDocumentAsync(object request)
         {
-            throw new NotImplementedException();
+            //convert obj to generalFetchRequest
+            //get the user
+            //diff is a common user
+            //resp create the response obj 
+            //return response
+
+            GeneralFetchRequest request_ = (GeneralFetchRequest)request;
+            Users user =  await _usersCollection.GetAsync(request_.Code);
+            var copier = new ClassValueCopier();
+
+            if (user.IsCommonUser)
+            {
+                return copier.ConvertAndCopy<CommonUser_EM, Users>(user);
+            }
+            else
+            {
+                return copier.ConvertAndCopy<AdminUser_EM, Users>(user);
+            }
+
         }
 
         public Task<bool> UpdateDocumentAsync(object request)

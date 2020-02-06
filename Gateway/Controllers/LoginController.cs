@@ -30,9 +30,9 @@ namespace Gateway.Controllers
 
         [Route("login")]
         [HttpPost]
-        public Task<IActionResult> Login(LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            throw new NotImplementedException();
+            return StatusCode(StatusCodes.Status200OK, new ActionResponse(StatusCodes.Status200OK));
         }
 
         

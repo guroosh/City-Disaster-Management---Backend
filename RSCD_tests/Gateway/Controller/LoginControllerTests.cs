@@ -58,7 +58,8 @@ namespace RSCD_tests.Gateway
 
             //Assert
             ObjectResult ok = result as ObjectResult;
-            Assert.True(ok.StatusCode == StatusCodes.Status500InternalServerError);
+            
+            Assert.True(ok.StatusCode == res.StatusCode);
         }
     }   
 }

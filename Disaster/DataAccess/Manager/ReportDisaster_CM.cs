@@ -1,6 +1,6 @@
-﻿using Disaster.DataAccess.Context;
-using Disaster.DataAccess.Repository;
+﻿using Disaster.DataAccess.Repository;
 using Disaster.Model.DB;
+using Disaster.DataAccess.Context;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;

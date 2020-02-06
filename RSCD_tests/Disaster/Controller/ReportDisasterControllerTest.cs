@@ -11,7 +11,7 @@ using Xunit;
 
 namespace RSCD_tests.Disaster.Controller
 {
-    class ReportDisasterControllerTest
+    public class ReportDisasterControllerTest
     {
 
         private ServiceProvider ServiceProvider { get; set; }

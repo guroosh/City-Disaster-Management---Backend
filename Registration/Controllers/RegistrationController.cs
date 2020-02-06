@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Registration.BusinessLogic;
 using Registration.Model.API;
+using RSCD.Model.Custom.ExternalModel.Registration;
 using RSCD.Models.API;
 
 namespace Registration.Controllers
@@ -126,6 +127,57 @@ namespace Registration.Controllers
                 response.StatusDescription += ex.Message.ToString();
             }
            return StatusCode(response.StatusCode, response);
+        }
+        [Route("FetchCommonUser")]
+        [HttpPost]
+        public async Task<IActionResult> FetchCommonUserDetails(GeneralFetchRequest request)
+        {
+            FetchCommonUserResponse response;
+            try
+            {
+                var userDetail = (CommonUser_EM)(await _businessLogic.GetDocumentAsync(request));
+                response = new FetchCommonUserResponse
+                {
+                    ActionResponse = new ActionResponse(StatusCodes.Status200OK),
+                    UserDetail = userDetail
+
+                };
+
+            }
+            catch(Exception ex)
+            {
+                response = new FetchCommonUserResponse
+                {
+                    ActionResponse = new ActionResponse(StatusCodes.Status500InternalServerError)
+
+                };
+                response.ActionResponse.StatusDescription += ex.Message.ToString();
+
+
+            }
+            return StatusCode(response.ActionResponse.StatusCode, response);
+        }
+        public async Task<IActionResult> FetchAdminUserDetails(GeneralFetchRequest request)
+        {
+            FetchAdminUserResponse response;
+            try
+            {
+                var userDetail = (AdminUser_EM)(await _businessLogic.GetAllDocumentsAsync(request));
+                response = new FetchAdminUserResponse
+                {
+                    ActionResponse = new ActionResponse(StatusCodes.Status200OK),
+                    UserDetail = userDetail
+                };
+            }
+            catch(Exception ex)
+            {
+                response = new FetchAdminUserResponse
+                {
+                    ActionResponse = new ActionResponse(StatusCodes.Status500InternalServerError)
+                };
+                response.ActionResponse.StatusDescription += ex.Message.ToString();
+            }
+            return StatusCode(response.ActionResponse.StatusCode, response);
         }
     }
 }
