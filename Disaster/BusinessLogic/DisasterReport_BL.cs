@@ -27,7 +27,7 @@ namespace Disaster.BusinessLogic
             ReportDisasterRequest request_ = (ReportDisasterRequest)request;
             ClassValueCopier copier = new ClassValueCopier();
             ReportedDisaster newReport = copier.ConvertAndCopy<ReportedDisaster, ReportDisasterRequest>(request_);
-            newReport.CreatedBy = request_.ReportedBy;  //why this line, why not have the same name and let the copier do its work.
+            newReport.CreatedBy = request_.ReportedBy;
             bool result = await DisasterCollection.AddAsync(newReport);
             if(result)
             {
@@ -59,7 +59,7 @@ namespace Disaster.BusinessLogic
             ReportedDisaster oldDisaster = await DisasterCollection.GetAsync(request_.ReferenceId);
             var copier = new ClassValueCopier();
             var newDisaster = copier.ConvertAndCopy(request_, oldDisaster);
-            newDisaster.LastUpdatedBy = request_.VerifiedBy;    //again why two names for one field
+            newDisaster.LastUpdatedBy = request_.VerifiedBy;
             bool result = await DisasterCollection.UpdateAsync(newDisaster);
             if (result)
             {
