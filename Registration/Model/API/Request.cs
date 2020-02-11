@@ -18,8 +18,8 @@ namespace Registration.Model.API
         public string EmailId { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
-        public string GovermentIdType { get; set; }
-        public string GovermentIdNumber { get; set; }
+        public string GovernmentIdType { get; set; }
+        public string GovernmentIdNumber { get; set; }
         public bool IsVolunteering { get; set; }
         public string VolunteeringField { get; set; }
     }

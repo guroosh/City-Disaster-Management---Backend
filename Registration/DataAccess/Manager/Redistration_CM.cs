@@ -1,4 +1,5 @@
-﻿using Registration.DataAccess.Repository;
+﻿using MongoDB.Driver;
+using Registration.DataAccess.Repository;
 using Registration.DataEntry.DataAccess.Context;
 using Registration.Model.API;
 using Registration.Model.DB;
@@ -35,7 +36,7 @@ namespace Registration.DataAccess.Manager
                 int id1 = Convert.ToInt32(DateTime.Now.ToString("mmssff"));
                 var id = id1 | id2;
 
-                document.ReferenceId = _collectionCodePrefix + id.ToString();
+                document.ReferenceCode = _collectionCodePrefix + id.ToString();
                 
                 document.CreatedAt = DateTime.Now.ToString();
                 document.LastUpdatedAt = "";
@@ -51,25 +52,71 @@ namespace Registration.DataAccess.Manager
             }
         }
 
-        public Task<bool> DeleteAsync(string id, string userCode, string reason = "")
+        public async Task<bool> DeleteAsync(string id, string userCode, string reason = "")
         {
-            throw new NotImplementedException();
+            try
+            {
+                string editedAt = DateTime.Now.ToString();
+
+                FilterDefinition<Users> empFilter = Builders<Users>.Filter.Eq(doc => doc.ReferenceCode, id);
+                UpdateDefinition<Users> empUpdate = Builders<Users>.Update
+                    .Set(doc => doc.IsActive, false)
+                    .Set(doc => doc.InActiveReason, reason)
+                    .Set(doc => doc.LastUpdatedAt, editedAt)
+                    .Set(doc => doc.LastUpdatedBy, userCode);
+                
+                UpdateResult result = await _context.UsersCollection.UpdateOneAsync(empFilter, empUpdate);
+                return (result.IsAcknowledged && result.ModifiedCount > 0);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public Task<List<Users>> GetAllAsync(string getDocs = "active")
+        public async Task<List<Users>> GetAllAsync(string getDocs = "active")
         {
-            throw new NotImplementedException();
+            try
+            {
+                return (getDocs.ToLower()) switch
+                {
+                    "active" => await _context.UsersCollection.Find(doc => doc.IsActive == true).ToListAsync(),
+                    "inactive" => await _context.UsersCollection.Find(doc => doc.IsActive == false).ToListAsync(),
+                    "all" => await _context.UsersCollection.Find(_ => true).ToListAsync(),
+                    _ => throw new Exception(string.Format("the case {0} is not implemented", getDocs)),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public Task<Users> GetAsync(string id)
+        public async Task<Users> GetAsync(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context.UsersCollection.Find(doc => doc.ReferenceCode == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public Task<bool> UpdateAsync(Users document)
+        public async Task<bool> UpdateAsync(Users document)
         {
-            throw new NotImplementedException();
+            try
+            {
+                document.LastUpdatedAt = DateTime.Now.ToString();
+                FilterDefinition<Users> filter = Builders<Users>.Filter.Eq(doc => doc.ReferenceCode, document.ReferenceCode);
+                var result = await _context.UsersCollection.ReplaceOneAsync(filter, document);
+                return (result.IsAcknowledged && result.ModifiedCount > 0);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-
     }
 }

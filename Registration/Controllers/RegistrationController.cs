@@ -158,6 +158,9 @@ namespace Registration.Controllers
             }
             return StatusCode(response.ActionResponse.StatusCode, response);
         }
+
+        [Route("FetchAdminUser")]
+        [HttpPost]
         public async Task<IActionResult> FetchAdminUserDetails(GeneralFetchRequest request)
         {
             FetchAdminUserResponse response;

@@ -17,7 +17,7 @@ namespace RSCD.DAL
 
     public class RSCDDataEntryModel : RSCDDataModel
     {
-        public string ReferenceId { get; set; }
+        public string ReferenceCode { get; set; }
         public bool IsActive { get; set; }
         public string InActiveReason { get; set; }
     }

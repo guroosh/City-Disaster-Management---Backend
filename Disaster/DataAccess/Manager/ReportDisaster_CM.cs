@@ -34,7 +34,7 @@ namespace Disaster.DataAccess.Manager
                 int id1 = Convert.ToInt32(DateTime.Now.ToString("mmssff"));
                 var id = id1 | id2;
 
-                document.ReferenceId = _collectionCodePrefix + id.ToString();
+                document.ReferenceCode = _collectionCodePrefix + id.ToString();
                 document.CreatedAt = DateTime.Now.ToString();
                 document.LastUpdatedAt = "";
                 document.IsActive = true;
@@ -61,7 +61,7 @@ namespace Disaster.DataAccess.Manager
         {
             try
             {
-                return await _context.ReportedDisasterCollection.Find(doc => doc.ReferenceId == id).FirstOrDefaultAsync();
+                return await _context.ReportedDisasterCollection.Find(doc => doc.ReferenceCode == id).FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@ namespace Disaster.DataAccess.Manager
             try
             {
                 document.LastUpdatedAt = DateTime.Now.ToString();
-                FilterDefinition<ReportedDisaster> filter = Builders<ReportedDisaster>.Filter.Eq(doc => doc.ReferenceId, document.ReferenceId);
+                FilterDefinition<ReportedDisaster> filter = Builders<ReportedDisaster>.Filter.Eq(doc => doc.ReferenceCode, document.ReferenceCode);
                 var result = await _context.ReportedDisasterCollection.ReplaceOneAsync(filter, document);
                 return (result.IsAcknowledged && result.ModifiedCount > 0);
             }

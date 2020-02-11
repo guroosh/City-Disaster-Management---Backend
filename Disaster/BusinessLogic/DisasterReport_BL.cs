@@ -29,11 +29,21 @@ namespace Disaster.BusinessLogic
             ReportedDisaster newReport = copier.ConvertAndCopy<ReportedDisaster, ReportDisasterRequest>(request_);
             newReport.CreatedBy = request_.ReportedBy;
             bool result = await DisasterCollection.AddAsync(newReport);
+            
             if(result)
             {
+                //Implemented::
+                //create the message
                 VerifyDisasterRequest verifyDisaster = copier.ConvertAndCopy<VerifyDisasterRequest, ReportedDisaster>(newReport);
                 string data = JsonConvert.SerializeObject(verifyDisaster);
+                //publishing the message
                 Mqtt.MqttPublish("RSCD/Server/Disaster/Verification", data);
+                //return the http response
+
+                //TO DO::
+                //1.create the message 
+                //2.push to the queue
+                //3.return the http response
             }
             return result;
         }

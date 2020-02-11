@@ -17,7 +17,6 @@ namespace Gateway.Middleware
         private readonly RequestDelegate _next;
         private readonly Auth_Config _authConfig;
 
-
         public Authentication (RequestDelegate next, IOptions<Auth_Config> authConfig)
         {
             _next = next;
