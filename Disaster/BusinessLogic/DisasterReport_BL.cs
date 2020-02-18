@@ -66,7 +66,7 @@ namespace Disaster.BusinessLogic
         public async Task<bool> UpdateDocumentAsync(object request)
         {
             VerifiedDisasterRequest request_ = (VerifiedDisasterRequest)request;
-            ReportedDisaster oldDisaster = await DisasterCollection.GetAsync(request_.ReferenceId);
+            ReportedDisaster oldDisaster = await DisasterCollection.GetAsync(request_.ReferenceCode);
             var copier = new ClassValueCopier();
             var newDisaster = copier.ConvertAndCopy(request_, oldDisaster);
             newDisaster.LastUpdatedBy = request_.VerifiedBy;

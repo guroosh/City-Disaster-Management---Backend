@@ -9,8 +9,9 @@ namespace Gateway.Model.API
     public class LoginResponse
     {
         public ActionResponse ActionResponse { get; set; }
-        public string UserCode { get; set; }
+        public string ReferenceCode { get; set; }
         public string AccessToken { get; set; }
+        public bool IsCommonUser { get; set; }
     }
 
 }

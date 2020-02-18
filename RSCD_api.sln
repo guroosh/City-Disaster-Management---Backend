@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Registration", "Registratio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSCD", "RSCD\RSCD.csproj", "{23D03AC5-CB73-45AB-897E-043621251CC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSCD_tests", "RSCD_tests\RSCD_tests.csproj", "{223CB649-9AAB-4E68-A784-EDCD52F3B95B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSCD_tests", "RSCD_tests\RSCD_tests.csproj", "{38F97882-06D6-4703-9A2E-C66711579DBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{23D03AC5-CB73-45AB-897E-043621251CC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23D03AC5-CB73-45AB-897E-043621251CC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23D03AC5-CB73-45AB-897E-043621251CC2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{223CB649-9AAB-4E68-A784-EDCD52F3B95B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{223CB649-9AAB-4E68-A784-EDCD52F3B95B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{223CB649-9AAB-4E68-A784-EDCD52F3B95B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{223CB649-9AAB-4E68-A784-EDCD52F3B95B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F97882-06D6-4703-9A2E-C66711579DBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F97882-06D6-4703-9A2E-C66711579DBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F97882-06D6-4703-9A2E-C66711579DBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F97882-06D6-4703-9A2E-C66711579DBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

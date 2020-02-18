@@ -9,13 +9,6 @@ namespace Gateway.DataAccess
 {
     public class DB_Context : MongoContext
     {
-        public IMongoCollection<Users> UserCollection
-        {
-            get
-            {
-                return _database.GetCollection<Users>("usersCollection");
-            }
-        }
 
 
         public DB_Context(IOptions<DB_Settings> options) : base(options.Value.DE_ConnectionString, options.Value.DE_DataBase)
