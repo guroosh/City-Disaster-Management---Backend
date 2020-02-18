@@ -7,15 +7,20 @@ using Registration.Model.DB;
 using Registration.DataAccess.Repository;
 using RSCD.Models.API;
 using RSCD.Model.Custom.ExternalModel.Registration;
+using RSCD.Model.Message;
+using Newtonsoft.Json;
+using RSCD.Mqtt;
 
 namespace Registration.BusinessLogic
 {
     public class Registration_BL : IBusinessLogic
     {
         private readonly IUsersCollection _usersCollection;
-        public Registration_BL(IUsersCollection usersCollection)
+        private readonly MqttPublisher Mqtt;
+        public Registration_BL(IUsersCollection usersCollection, MqttPublisher mqtt)
         {
             _usersCollection = usersCollection;
+            Mqtt = mqtt;
         }
 
         public Task<bool> CreateAsync(object request)
@@ -29,7 +34,14 @@ namespace Registration.BusinessLogic
             Users newUser = copier.ConvertAndCopy<Users, RegisterCommonUserRequest>(request);
             newUser.Role = "CommonUser";
             newUser.IsCommonUser = true;
-            return await _usersCollection.AddAsync(newUser);
+            bool result = await _usersCollection.AddAsync(newUser);
+            if (result)
+            {
+                NewUser loginUser = copier.ConvertAndCopy<NewUser, Users>(newUser);
+                string data = JsonConvert.SerializeObject(loginUser);
+                Mqtt.MqttPublish("RSCD/Server/Registration/NewCommonUser", data);
+            }
+            return result;
         }
 
         public async Task<bool> RegisterAdminUser(RegisterAdminUserRequest request)

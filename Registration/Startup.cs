@@ -11,12 +11,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RSCD.MQTT;
+using RSCD.Mqtt;
 using RSCD;
+using Registration.Mqtt;
 using Registration.DataEntry.DataAccess.Context;
 using RSCD.Middleware;
 using Registration.BusinessLogic;
 using Registration.DataAccess.Repository;
 using Registration.DataAccess.Manager;
+using RSCD.Model.Configration;
 
 namespace Registration
 {
@@ -34,8 +37,17 @@ namespace Registration
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<Mqtt_Settings>(options =>
+            {
+                options.ClientId = "RSCD_RegistrationModule";
+                options.Host = "10.6.32.103";
+                options.SuscribeTopic = "RSCD/Registration/#";
+            });
+
             services.AddModuleConfigurations(Configuration,_hostEnvoirment);
             services.AddScoped<DB_Context>();
+            services.AddHostedService<MqttSubscriber>();
+            services.AddScoped<MqttPublisher>();
             services.AddScoped<Registration_BL>();
             services.AddScoped<IUsersCollection,Redistration_CM>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
