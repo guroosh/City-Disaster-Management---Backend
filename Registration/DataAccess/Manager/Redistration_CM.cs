@@ -3,6 +3,7 @@ using Registration.DataAccess.Repository;
 using Registration.DataEntry.DataAccess.Context;
 using Registration.Model.API;
 using Registration.Model.DB;
+using RSCD.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace Registration.DataAccess.Manager
             }
         }
 
-        public async Task<bool> AddAsync(Users document)
+        public async Task<string> RegisterUserAsync(Users document)
         {
             try
             {
@@ -44,7 +45,7 @@ namespace Registration.DataAccess.Manager
                 document.IsActive = true;
                 await _context.UsersCollection.InsertOneAsync(document);
                 
-                return true;
+                return document.ReferenceCode;
             }
             catch (Exception ex)
             {
@@ -117,6 +118,11 @@ namespace Registration.DataAccess.Manager
             {
                 throw ex;
             }
+        }
+
+        Task<bool> IDataRepository<Users>.AddAsync(Users document)
+        {
+            throw new NotImplementedException();
         }
     }
 }

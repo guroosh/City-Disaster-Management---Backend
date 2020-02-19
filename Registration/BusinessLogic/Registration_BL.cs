@@ -34,10 +34,13 @@ namespace Registration.BusinessLogic
             Users newUser = copier.ConvertAndCopy<Users, RegisterCommonUserRequest>(request);
             newUser.Role = "CommonUser";
             newUser.IsCommonUser = true;
-            bool result = await _usersCollection.AddAsync(newUser);
+            string referenceCode = await _usersCollection.RegisterUserAsync(newUser);
+            bool result = referenceCode.Length != 0;
+            
             if (result)
             {
                 NewUser loginUser = copier.ConvertAndCopy<NewUser, Users>(newUser);
+                loginUser.ReferenceCode = referenceCode;
                 string data = JsonConvert.SerializeObject(loginUser);
                 Mqtt.MqttPublish("RSCD/Server/Registration/NewCommonUser", data);
             }
