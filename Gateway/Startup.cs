@@ -1,5 +1,7 @@
 using Gateway.BusinessLogic;
 using Gateway.DataAccess;
+using Gateway.DataAccess.Manager;
+using Gateway.DataAccess.Repository;
 using Gateway.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +31,7 @@ namespace Gateway
             services.AddAuthenticationConfigurations(Configuration);
             services.AddScoped<DB_Context>();
             services.AddScoped<Login_BL>();
+            services.AddScoped<IUserCredentialCollection, UserCredential_CM>();
             services.AddRoutingServices();
             services.AddMvc(options => options.EnableEndpointRouting = false);  
         }
