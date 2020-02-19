@@ -94,9 +94,7 @@ namespace Registration.BusinessLogic
             newuser.LastUpdatedBy = request.UserCode;
             return await _usersCollection.UpdateAsync(newuser);
         }
-
-
-    
+   
 
         }
     }
