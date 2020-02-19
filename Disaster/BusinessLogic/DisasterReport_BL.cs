@@ -29,11 +29,21 @@ namespace Disaster.BusinessLogic
             ReportedDisaster newReport = copier.ConvertAndCopy<ReportedDisaster, ReportDisasterRequest>(request_);
             newReport.CreatedBy = request_.ReportedBy;
             bool result = await DisasterCollection.AddAsync(newReport);
+            
             if(result)
             {
+                //Implemented::
+                //create the message
                 VerifyDisasterRequest verifyDisaster = copier.ConvertAndCopy<VerifyDisasterRequest, ReportedDisaster>(newReport);
                 string data = JsonConvert.SerializeObject(verifyDisaster);
+                //publishing the message
                 Mqtt.MqttPublish("RSCD/Server/Disaster/Verification", data);
+                //return the http response
+
+                //TO DO::
+                //1.create the message 
+                //2.push to the queue
+                //3.return the http response
             }
             return result;
         }
@@ -56,11 +66,18 @@ namespace Disaster.BusinessLogic
         public async Task<bool> UpdateDocumentAsync(object request)
         {
             VerifiedDisasterRequest request_ = (VerifiedDisasterRequest)request;
-            ReportedDisaster employee = await DisasterCollection.GetAsync(request_.ReferenceId);
+            ReportedDisaster oldDisaster = await DisasterCollection.GetAsync(request_.ReferenceCode);
             var copier = new ClassValueCopier();
-            var newEmployee = copier.ConvertAndCopy(request_, employee);
-            newEmployee.LastUpdatedBy = request_.VerifiedBy;
-            return await DisasterCollection.UpdateAsync(newEmployee);
+            var newDisaster = copier.ConvertAndCopy(request_, oldDisaster);
+            newDisaster.LastUpdatedBy = request_.VerifiedBy;
+            bool result = await DisasterCollection.UpdateAsync(newDisaster);
+            if (result)
+            {
+                VerifiedDisasterRequest verifiedDisaster = copier.ConvertAndCopy<VerifiedDisasterRequest, ReportedDisaster>(newDisaster);
+                string data = JsonConvert.SerializeObject(verifiedDisaster);
+                Mqtt.MqttPublish("RSCD/Server/Disaster/Verified", data);
+            }
+            return result;
         }
     }
 }

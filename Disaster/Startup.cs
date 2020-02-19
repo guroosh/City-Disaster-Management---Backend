@@ -32,7 +32,7 @@ namespace Disaster
             services.Configure<Mqtt_Settings>(options =>
             {
                 options.ClientId = "RSCD_DisasterModule";
-                options.Host = "10.6.42.165";
+                options.Host = "10.6.32.103";
                 options.SuscribeTopic = "RSCD/Disaster/#";
             });
 

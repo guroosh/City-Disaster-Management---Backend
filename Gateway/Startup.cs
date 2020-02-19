@@ -26,8 +26,10 @@ namespace Gateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRscdCorsPolicy(_crosPolicy);
+            services.AddAuthenticationConfigurations(Configuration);
             services.AddScoped<DB_Context>();
             services.AddScoped<Login_BL>();
+            services.AddRoutingServices();
             services.AddMvc(options => options.EnableEndpointRouting = false);  
         }
 

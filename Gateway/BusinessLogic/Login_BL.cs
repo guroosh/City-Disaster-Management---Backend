@@ -18,6 +18,11 @@ namespace Gateway.BusinessLogic
     {
         public Login_BL()
         {
+
+        }
+        public async  Task<LoginResponse> CheckCredentialsAsync (LoginRequest request)
+        {
+            throw new NotImplementedException();
         }
     }   
 }
