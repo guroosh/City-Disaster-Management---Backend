@@ -118,6 +118,8 @@ namespace Registration.BusinessLogic
             return await _usersCollection.UpdateAsync(newuser);
         }
 
+   
+
         }
     }
 
