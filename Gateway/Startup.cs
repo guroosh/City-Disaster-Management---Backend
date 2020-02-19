@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RSCD;
+using RSCD.Model.Configration;
+using Gateway.Mqtt;
 
 namespace Gateway
 {
@@ -25,9 +26,17 @@ namespace Gateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<Mqtt_Settings>(options =>
+            {
+                options.ClientId = "RSCD_GatewayModule";
+                options.Host = "10.6.32.103";
+                options.SuscribeTopic = "RSCD/Registration/#";
+            });
+
             services.AddRscdCorsPolicy(_crosPolicy);
             services.AddAuthenticationConfigurations(Configuration);
             services.AddScoped<DB_Context>();
+            services.AddHostedService<MqttSubscriber>();
             services.AddScoped<Login_BL>();
             services.AddRoutingServices();
             services.AddMvc(options => options.EnableEndpointRouting = false);  
