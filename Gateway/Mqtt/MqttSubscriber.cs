@@ -10,6 +10,8 @@ using MQTTnet.Client.Receiving;
 using RSCD.Model.Configration;
 using RSCD.MQTT;
 using Newtonsoft.Json;
+using Gateway.BusinessLogic;
+using RSCD.Model.Message;
 
 namespace Gateway.Mqtt
 {
@@ -27,11 +29,34 @@ namespace Gateway.Mqtt
 
                 try
                 {
-                    if (topic == "RSCD/Registration/NewCommonUser")
+                    if (topic == "RSCD/Registration/AddNewUser")
                     {
                         using (IServiceScope scope = serviceProvider.CreateScope())
                         {
                             // pass it to the handler class
+                            var bl = scope.ServiceProvider.GetRequiredService<Login_BL>();
+                            var disasterdData = JsonConvert.DeserializeObject<NewUser>(data);
+                            var result = bl.CreateAsync(disasterdData);
+                        }
+                    }
+                    if (topic == "RSCD/Registration/UpdateUser")
+                    {
+                        using (IServiceScope scope = serviceProvider.CreateScope())
+                        {
+                            // pass it to the handler class
+                            var bl = scope.ServiceProvider.GetRequiredService<Login_BL>();
+                            var disasterdData = JsonConvert.DeserializeObject<NewUser>(data);
+                            var result = bl.UpdateDocumentAsync(disasterdData);
+                        }
+                    }
+                    if (topic == "RSCD/Registration/DeleteUser")
+                    {
+                        using (IServiceScope scope = serviceProvider.CreateScope())
+                        {
+                            // pass it to the handler class
+                            var bl = scope.ServiceProvider.GetRequiredService<Login_BL>();
+                            var disasterdData = JsonConvert.DeserializeObject<NewUser>(data);
+                            var result = bl.DeleteDocumentAsync(disasterdData);
                         }
                     }
                 }

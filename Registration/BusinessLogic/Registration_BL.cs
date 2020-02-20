@@ -42,7 +42,7 @@ namespace Registration.BusinessLogic
                 NewUser loginUser = copier.ConvertAndCopy<NewUser, Users>(newUser);
                 loginUser.ReferenceCode = referenceCode;
                 string data = JsonConvert.SerializeObject(loginUser);
-                Mqtt.MqttPublish("RSCD/Registration/NewCommonUser", data);
+                Mqtt.MqttPublish("RSCD/Registration/AddNewUser", data);
             }
             return result;
         }
