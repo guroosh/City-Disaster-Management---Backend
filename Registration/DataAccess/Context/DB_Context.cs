@@ -13,7 +13,6 @@ namespace Registration.DataEntry.DataAccess.Context
             get
             {
                 IMongoCollection<Users> collection = _database.GetCollection<Users>("userCollection");
-                collection.
                 return collection;
             }
         }
