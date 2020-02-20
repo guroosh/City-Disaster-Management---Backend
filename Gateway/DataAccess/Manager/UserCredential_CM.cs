@@ -1,5 +1,6 @@
 ﻿using Gateway.DataAccess.Repository;
 using Gateway.Model.DB;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,21 @@ using System.Threading.Tasks;
 
 namespace Gateway.DataAccess.Manager
 {
-    public class UserCredential_CM : IUserCredentialCollection
+    public  class UserCredential_CM : IUserCredentialCollection
     {
-        public Task<bool> AddAsync(UserCredentials document)
+        private readonly DB_Context _context;
+
+        public UserCredential_CM(DB_Context context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<bool> AddAsync(UserCredentials document)
+        {
+            document.CreatedAt = DateTime.Now.ToString();
+            document.LastUpdatedAt = "";
+            document.IsActive = true;
+            await _context.UserCredentialCollection.InsertOneAsync(document);
+            return true;
         }
 
         public Task<bool> CheckLoginCredential()
@@ -39,9 +50,19 @@ namespace Gateway.DataAccess.Manager
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(UserCredentials document)
+        public async Task<bool> UpdateAsync(UserCredentials document)
         {
-            throw new NotImplementedException();
+            try
+            {
+                document.LastUpdatedAt = DateTime.Now.ToString();
+                FilterDefinition<UserCredentials> filter = Builders<UserCredentials>.Filter.Eq(doc => doc.ReferenceCode, document.ReferenceCode);
+                var result = await _context.UserCredentialCollection.ReplaceOneAsync(filter, document);
+                return (result.IsAcknowledged && result.ModifiedCount > 0);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
