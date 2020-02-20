@@ -40,7 +40,7 @@ namespace Registration
             services.Configure<Mqtt_Settings>(options =>
             {
                 options.ClientId = "RSCD_RegistrationModule";
-                options.Host = "10.6.32.103";
+                options.Host = "localhost";
                 options.SuscribeTopic = "RSCD/Registration/#";
             });
 

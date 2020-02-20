@@ -37,7 +37,7 @@ namespace Registration.BusinessLogic
             string referenceCode = await _usersCollection.RegisterUserAsync(newUser);
             bool result = referenceCode.Length != 0;
             
-            if (result)
+            if (result) 
             {
                 NewUser loginUser = copier.ConvertAndCopy<NewUser, Users>(newUser);
                 loginUser.ReferenceCode = referenceCode;
