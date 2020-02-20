@@ -42,7 +42,7 @@ namespace Registration.BusinessLogic
                 NewUser loginUser = copier.ConvertAndCopy<NewUser, Users>(newUser);
                 loginUser.ReferenceCode = referenceCode;
                 string data = JsonConvert.SerializeObject(loginUser);
-                Mqtt.MqttPublish("RSCD/Server/Registration/NewCommonUser", data);
+                Mqtt.MqttPublish("RSCD/Registration/NewCommonUser", data);
             }
             return result;
         }
@@ -117,6 +117,8 @@ namespace Registration.BusinessLogic
             newuser.LastUpdatedBy = request.UserCode;
             return await _usersCollection.UpdateAsync(newuser);
         }
+
+   
 
         }
     }

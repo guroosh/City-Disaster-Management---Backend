@@ -8,7 +8,7 @@ using RSCD.Models.API;
 
 namespace Disaster.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]")] //CONTROLLER
     [ApiController]
     public class DisasterReportController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace Disaster.Controllers
         }
 
         [Route("test")]
-        [HttpGet]
+        [HttpGet] //ACTION
         public ActionResult Test()
         {
             return Ok(new ActionResponse(StatusCodes.Status200OK));

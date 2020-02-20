@@ -14,6 +14,16 @@ namespace Gateway.DataAccess.Manager
             throw new NotImplementedException();
         }
 
+        public Task<bool> CheckLoginCredential()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CheckUserExistence()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> DeleteAsync(string id, string userCode, string reason = "")
         {
             throw new NotImplementedException();
@@ -33,5 +43,7 @@ namespace Gateway.DataAccess.Manager
         {
             throw new NotImplementedException();
         }
+
+
     }
 }
