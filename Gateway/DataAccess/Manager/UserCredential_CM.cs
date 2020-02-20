@@ -1,5 +1,6 @@
 ﻿using Gateway.DataAccess.Repository;
 using Gateway.Model.DB;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,9 +50,19 @@ namespace Gateway.DataAccess.Manager
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(UserCredentials document)
+        public async Task<bool> UpdateAsync(UserCredentials document)
         {
-            throw new NotImplementedException();
+            try
+            {
+                document.LastUpdatedAt = DateTime.Now.ToString();
+                FilterDefinition<UserCredentials> filter = Builders<UserCredentials>.Filter.Eq(doc => doc.ReferenceCode, document.ReferenceCode);
+                var result = await _context.UserCredentialCollection.ReplaceOneAsync(filter, document);
+                return (result.IsAcknowledged && result.ModifiedCount > 0);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
