@@ -9,6 +9,7 @@ using RSCD.Model.Configration;
 using RSCD.Helper;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Gateway.Middleware
 {
@@ -84,8 +85,13 @@ namespace Gateway.Middleware
 
         private bool CheckJWT(HttpContext context)
         {
-            StringValues data = new StringValues();
-            bool headerFound = context.Request.Headers.TryGetValue(_authConfig.L2Token, out data);
+            bool headerFound = context.Request.Headers.TryGetValue(_authConfig.L2Token, out StringValues data);
+            
+            if(data.Equals(""))
+            {
+                return VerifyChannel(context);
+            }
+            
             return (headerFound) ? VerifyJWT(data) : false;
         }
 
@@ -96,6 +102,25 @@ namespace Gateway.Middleware
             var claims = token.Claims;
             var clm_ = claims.FirstOrDefault(clm => clm.Type == "PayloadKey");
             return (clm_.Value == _authConfig.PayLoadKey);
+        }
+
+        private bool VerifyChannel(HttpContext context)
+        {
+            //exception rule 
+            // -> if jwt is empty
+            // -> check if channel is android
+            // -> if url is to register common user return true
+
+            bool channelMatches = context.Response.Headers.TryGetValue("ChannelName", out StringValues channelName);
+            if (channelName.Equals("Android"))
+            {
+                List<string> pathArray = context.Request.Path.Value.Split("/").ToList();
+                pathArray.RemoveAt(0);
+                string endpoint = pathArray[1].ToLower();
+                string basePath = pathArray[0].ToLower();
+                return endpoint.ToLower().Equals("registerCu") && basePath.ToLower().Equals("Registration");
+            }
+            return false;
         }
     }
 }

@@ -34,15 +34,12 @@ namespace Registration.BusinessLogic
             Users newUser = copier.ConvertAndCopy<Users, RegisterCommonUserRequest>(request);
             newUser.Role = "CommonUser";
             newUser.IsCommonUser = true;
-            string referenceCode = await _usersCollection.RegisterUserAsync(newUser);
-            bool result = referenceCode.Length != 0;
+            newUser.ReferenceCode = await _usersCollection.RegisterUserAsync(newUser);
+            bool result = newUser.ReferenceCode.Length != 0;
             
             if (result) 
             {
-                NewUser loginUser = copier.ConvertAndCopy<NewUser, Users>(newUser);
-                loginUser.ReferenceCode = referenceCode;
-                string data = JsonConvert.SerializeObject(loginUser);
-                Mqtt.MqttPublish("RSCD/Registration/NewCommonUser", data);
+                await PublishUserCredentialAsync(newUser);
             }
             return result;
         }
@@ -52,7 +49,14 @@ namespace Registration.BusinessLogic
             var copier = new ClassValueCopier();
             Users newUser = copier.ConvertAndCopy<Users, RegisterAdminUserRequest>(request);
             newUser.IsCommonUser = false;
-            return await _usersCollection.AddAsync(newUser);
+            string referenceCode = await _usersCollection.RegisterUserAsync(newUser);
+            bool result = referenceCode.Length != 0;
+
+            if (result)
+            {
+                await PublishUserCredentialAsync(newUser);
+            }
+            return result;
         }
         
         public async Task<bool> UpdateCommonUser(UpdateCommonUserRequest request)
@@ -116,6 +120,15 @@ namespace Registration.BusinessLogic
             var newuser = copier.ConvertAndCopy(request, olduser);
             newuser.LastUpdatedBy = request.UserCode;
             return await _usersCollection.UpdateAsync(newuser);
+        }
+
+        private async Task<bool> PublishUserCredentialAsync(Users newUser)
+        {
+            var copier = new ClassValueCopier();
+            NewUser loginUser = copier.ConvertAndCopy<NewUser, Users>(newUser);
+            string data = JsonConvert.SerializeObject(loginUser);
+            await Mqtt.MqttPublish("RSCD/Registration/NewCommonUser", data);
+            return true;
         }
 
    

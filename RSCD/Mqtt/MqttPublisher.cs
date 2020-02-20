@@ -44,9 +44,9 @@ namespace RSCD.Mqtt
             });
         }
 
-        public void ConnectMqqt()
+        public async Task ConnectMqqt()
         {
-            Task.Run(async () => { await Client.ConnectAsync(ClientOptions); });
+            await Client.ConnectAsync(ClientOptions);
         }
 
         public void DisconnectMqtt()
@@ -54,7 +54,7 @@ namespace RSCD.Mqtt
             Task.Run(async () => { await Client.DisconnectAsync(); });
         }
 
-        public void MqttPublish(string topic,string data)
+        public async Task MqttPublish(string topic,string data)
         {
             PublishOptions = new MqttApplicationMessageBuilder()
                 .WithTopic(topic)
@@ -63,7 +63,7 @@ namespace RSCD.Mqtt
                 .WithRetainFlag()
                 .Build();
 
-            ConnectMqqt();
+            await ConnectMqqt();
         }
 
 
