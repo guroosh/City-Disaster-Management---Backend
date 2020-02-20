@@ -35,6 +35,7 @@ namespace RSCD.MQTT
 
         private void RegisterMqtt(Mqtt_Settings settings)
         {
+            Console.WriteLine($"Sub started in {settings.ClientId}");
             var factory = new MqttFactory();
             Client = factory.CreateMqttClient();
             ClientOptions = new MqttClientOptionsBuilder()

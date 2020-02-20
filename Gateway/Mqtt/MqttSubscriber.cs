@@ -29,7 +29,7 @@ namespace Gateway.Mqtt
 
                 try
                 {
-                    if (topic == "RSCD/Registration/AddNewUser")
+                    if (topic == "RSCD/Message/AddNewUser")
                     {
                         using (IServiceScope scope = serviceProvider.CreateScope())
                         {
@@ -39,7 +39,7 @@ namespace Gateway.Mqtt
                             var result = bl.CreateAsync(disasterdData);
                         }
                     }
-                    if (topic == "RSCD/Registration/UpdateUser")
+                    if (topic == "RSCD/Message/UpdateUser")
                     {
                         using (IServiceScope scope = serviceProvider.CreateScope())
                         {
@@ -47,9 +47,9 @@ namespace Gateway.Mqtt
                             var bl = scope.ServiceProvider.GetRequiredService<Login_BL>();
                             var disasterdData = JsonConvert.DeserializeObject<NewUser>(data);
                             var result = bl.UpdateDocumentAsync(disasterdData);
-                        }
+                        } 
                     }
-                    if (topic == "RSCD/Registration/DeleteUser")
+                    if (topic == "RSCD/Message/DeleteUser")
                     {
                         using (IServiceScope scope = serviceProvider.CreateScope())
                         {

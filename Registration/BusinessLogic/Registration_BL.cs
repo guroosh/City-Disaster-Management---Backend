@@ -127,7 +127,7 @@ namespace Registration.BusinessLogic
             var copier = new ClassValueCopier();
             NewUser loginUser = copier.ConvertAndCopy<NewUser, Users>(newUser);
             string data = JsonConvert.SerializeObject(loginUser);
-            await Mqtt.MqttPublish("RSCD/Registration/NewCommonUser", data);
+            await Mqtt.MqttPublish("RSCD/Message/AddNewUser", data);
             return true;
         }
 

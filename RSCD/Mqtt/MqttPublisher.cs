@@ -60,7 +60,7 @@ namespace RSCD.Mqtt
                 .WithTopic(topic)
                 .WithPayload(data)
                 .WithExactlyOnceQoS()
-                .WithRetainFlag()
+                //.WithRetainFlag()
                 .Build();
 
             await ConnectMqqt();

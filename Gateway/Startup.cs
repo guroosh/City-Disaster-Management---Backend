@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RSCD.Model.Configration;
+using RSCD;
 using Gateway.Mqtt;
 
 namespace Gateway
@@ -31,12 +32,13 @@ namespace Gateway
             services.Configure<Mqtt_Settings>(options =>
             {
                 options.ClientId = "RSCD_GatewayModule";
-                options.Host = "10.6.32.103";
-                options.SuscribeTopic = "RSCD/Registration/#";
+                options.Host = "localhost";
+                options.SuscribeTopic = "RSCD/Message/#";
             });
 
             services.AddRscdCorsPolicy(_crosPolicy);
             services.AddAuthenticationConfigurations(Configuration);
+            services.AddModuleConfigurations(Configuration, _hostingEnvironment);
             services.AddScoped<DB_Context>();
             services.AddHostedService<MqttSubscriber>();
             services.AddScoped<Login_BL>();
