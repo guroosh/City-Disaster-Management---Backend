@@ -38,9 +38,15 @@ namespace Gateway.BusinessLogic
             return result;
         }
 
-        public Task<bool> UpdateDocumentAsync(object request)
+        public async Task<bool> UpdateDocumentAsync(object request)
         {
-            throw new NotImplementedException();
+            NewUser request_ = (NewUser)request;
+            var copier = new ClassValueCopier();
+            UserCredentials userCredentials = copier.ConvertAndCopy<UserCredentials, NewUser>(request_);
+            userCredentials.LastUpdatedBy = request_.ReferenceCode;
+            userCredentials.LastUpdatedAt = DateTime.Now.ToString();
+            bool result = await _userCredentialCollection.UpdateAsync(userCredentials);
+            return result;
         }
 
         public Task<bool> DeleteDocumentAsync(object request)

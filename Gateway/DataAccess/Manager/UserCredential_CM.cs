@@ -7,11 +7,21 @@ using System.Threading.Tasks;
 
 namespace Gateway.DataAccess.Manager
 {
-    public class UserCredential_CM : IUserCredentialCollection
+    public  class UserCredential_CM : IUserCredentialCollection
     {
-        public Task<bool> AddAsync(UserCredentials document)
+        private readonly DB_Context _context;
+
+        public UserCredential_CM(DB_Context context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<bool> AddAsync(UserCredentials document)
+        {
+            document.CreatedAt = DateTime.Now.ToString();
+            document.LastUpdatedAt = "";
+            document.IsActive = true;
+            await _context.UserCredentialCollection.InsertOneAsync(document);
+            return true;
         }
 
         public Task<bool> CheckLoginCredential()

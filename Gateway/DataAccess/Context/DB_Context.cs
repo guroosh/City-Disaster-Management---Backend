@@ -10,7 +10,13 @@ namespace Gateway.DataAccess
     public class DB_Context : MongoContext
     {
 
-
+        public IMongoCollection<UserCredentials> UserCredentialCollection
+        {
+            get
+            {
+                return _database.GetCollection<UserCredentials>("userCredentialCollection");
+            }
+        }
         public DB_Context(IOptions<DB_Settings> options) : base(options.Value.DE_ConnectionString, options.Value.DE_DataBase)
         {
             Console.WriteLine($"->ConsolePrint:in DBConext \nCS: {options.Value.DE_ConnectionString}\nDB: {options.Value.DE_DataBase}");
