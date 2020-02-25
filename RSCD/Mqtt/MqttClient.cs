@@ -68,7 +68,6 @@ namespace RSCD.MQTT
             _appLifetime.ApplicationStarted.Register(OnStarted);
             _appLifetime.ApplicationStopping.Register(OnStopping);
             _appLifetime.ApplicationStopped.Register(OnStopped);
-
             return Task.CompletedTask;
         }
         

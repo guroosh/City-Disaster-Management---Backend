@@ -25,12 +25,7 @@ namespace Gateway.DataAccess.Manager
             return true;
         }
 
-        public Task<bool> CheckLoginCredential()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> CheckUserExistence()
+        public Task<bool> CheckUserExistence(string userCode)
         {
             throw new NotImplementedException();
         }
