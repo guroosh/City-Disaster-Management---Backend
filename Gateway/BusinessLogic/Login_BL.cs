@@ -14,19 +14,66 @@ using RSCD.Helper;
 using Gateway.DataAccess.Repository;
 using RSCD.Model.Message;
 using RSCD.BLL;
+using Microsoft.Extensions.Configuration;
 
 namespace Gateway.BusinessLogic
 {
     public class Login_BL : IBusinessLogic
     {
         private readonly IUserCredentialCollection _userCredentialCollection;
-        public Login_BL(IUserCredentialCollection credentialCollection) 
+        private readonly Auth_Config _authConfig;
+
+        public Login_BL(IUserCredentialCollection credentialCollection, IOptions<Auth_Config> authConfig)
         {
             _userCredentialCollection = credentialCollection;
+            _authConfig = authConfig.Value;
         }
-        public Task<LoginResponse> CheckCredentialsAsync (LoginRequest request)
+        public async Task<LoginResponse> CheckCredentialsAsync (LoginRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var checklogin = await _userCredentialCollection.GetAsync(request.LoginId);
+                if(checklogin.Password == "")
+                {
+                    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authConfig.SecurityKey));
+                    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+                    var jwtHeader = new JwtHeader(credentials);
+
+                    var payloadClaims = new[]
+                    {
+                    new Claim("Issuer",_authConfig.Issuer),
+                    new Claim("IssuedTo",_authConfig.IssuedTo),
+                    new Claim("UserCode", checklogin.ReferenceCode),
+                    new Claim("PayloadKey",_authConfig.PayLoadKey),
+                    new Claim("IssuedAt",DateTime.Now.ToString()),
+                    new Claim("Channel",request.Channel)
+                };
+
+                    var payload = new JwtPayload(payloadClaims);
+
+                    var token = new JwtSecurityToken(jwtHeader, payload);
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    string tokenString = tokenHandler.WriteToken(token);
+
+                    var access = new LoginResponse
+                    {
+                        AccessToken = tokenString,
+                        ReferenceCode = checklogin.ReferenceCode,
+                       
+                    };
+                    return access;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+            }
+            catch(NullReferenceException)
+            {
+                // user does not exist
+                throw new Exception();
+            }
         }
        
         public async Task<bool> CreateAsync(object request)
