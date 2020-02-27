@@ -49,7 +49,7 @@ namespace Registration
             services.AddHostedService<MqttSubscriber>();
             services.AddScoped<MqttPublisher>();
             services.AddScoped<Registration_BL>();
-            services.AddScoped<IUsersCollection,Redistration_CM>();
+            services.AddScoped<IUsersCollection,Registration_CM>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
         }
 

@@ -103,6 +103,8 @@ namespace Gateway.BusinessLogic
 
         public Task<object> GetDocumentAsync(object request)
         {
+            //convert to our need
+            //return obj of userCredentiAL
             throw new NotImplementedException();
         }
 
