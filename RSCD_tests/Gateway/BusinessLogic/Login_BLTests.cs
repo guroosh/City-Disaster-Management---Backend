@@ -83,7 +83,7 @@ namespace RSCD_tests.Gateway.BusinessLogic
 
             //Act
 
-            var result = await businessLogic.CreateAsync(MockRequest.Object);
+            var result = await businessLogic.UpdateDocumentAsync(MockRequest.Object);
 
             //Assert
             Assert.True(result);
