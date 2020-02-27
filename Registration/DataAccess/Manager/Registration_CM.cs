@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Registration.DataAccess.Manager
 {
-    public class Redistration_CM : IUsersCollection
+    public class Registration_CM : IUsersCollection
     {
         private readonly DB_Context _context;
 
-        public Redistration_CM(DB_Context context)
+        public Registration_CM(DB_Context context)
         {
             _context = context;
         }

@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gateway\Gateway.csproj" />
+    <ProjectReference Include="..\Registration\Registration.csproj" />
   </ItemGroup>
 
 </Project>
