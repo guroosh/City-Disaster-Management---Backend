@@ -70,7 +70,7 @@ namespace RSCD_tests.Gateway.BusinessLogic
             Assert.True(result);
         }
         [Fact]
-         public async Task UpdateDocumentAsync()
+         public async Task UpdateDocumentAsyncTest()
             {
             SetupServices();
             var MockRequest = new Mock<NewUser>();
@@ -89,6 +89,26 @@ namespace RSCD_tests.Gateway.BusinessLogic
             Assert.True(result);
 
         }
+        [Fact]
+        public async Task DeleteDocumentAsyncTest()
+        {
+            SetupServices();
+            var MockRequest = new Mock<NewUser>();
+            MockRequest.Object.ReferenceCode = "Android";
+            MockRequest.Object.EmailId = "palkarm@tcd.ie";
+            MockRequest.Object.Password = "1234";
+            MockRequest.Object.IsCommonUser = true;
+            bool response = false;
+            var businessLogic = ServiceProvider.GetRequiredService<Login_BL>();
+
+            //Act
+
+            var result = await businessLogic.DeleteDocumentAsync(MockRequest.Object);
+
+            //Assert
+            Assert.True(result);
+        }
+
 
         private void SetupServices()
         {
