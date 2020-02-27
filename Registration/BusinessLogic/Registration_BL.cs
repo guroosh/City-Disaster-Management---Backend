@@ -131,8 +131,6 @@ namespace Registration.BusinessLogic
             return true;
         }
 
-   
-
         }
     }
 

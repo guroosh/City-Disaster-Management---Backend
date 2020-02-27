@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -16,6 +16,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gateway\Gateway.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Registration\" />
   </ItemGroup>
 
 </Project>

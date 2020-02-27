@@ -5,7 +5,7 @@
   "serviceRoutes": [
 
     {
-      "endpoint": "loginService",
+      "endpoint": "login",
       "key": "",
       "url": "login"
     },
