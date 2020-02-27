@@ -29,21 +29,13 @@ namespace Gateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<Mqtt_Settings>(options =>
-            {
-                options.ClientId = "RSCD_GatewayModule";
-                options.Host = "localhost";
-                options.SuscribeTopic = "RSCD/Message/#";
-            });
-
             services.AddRscdCorsPolicy(_crosPolicy);
             services.AddAuthenticationConfigurations(Configuration);
             services.AddModuleConfigurations(Configuration, _hostingEnvironment);
-            services.AddScoped<DB_Context>();
-            services.AddHostedService<MqttSubscriber>();
-            services.AddScoped<Login_BL>();
-            services.AddScoped<IUserCredentialCollection, UserCredential_CM>();
             services.AddRoutingServices();
+            services.AddMongoServices();
+            services.AddMqttServices(Configuration);
+            services.AddLoginServices();
             services.AddMvc(options => options.EnableEndpointRouting = false);  
         }
 
