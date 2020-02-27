@@ -34,7 +34,7 @@ namespace Gateway
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(policyName, p => p.WithHeaders("RSCD-Token", "rscd-jwt-token", "content-type")
+                options.AddPolicy(policyName, p => p.WithHeaders("RSCD-Token", "rscd-jwt-token", "content-type", "channel")
                 .AllowAnyMethod()
                 .AllowAnyOrigin());
             });

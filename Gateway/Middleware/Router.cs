@@ -22,7 +22,7 @@ namespace Gateway.Middleware
 
         public async Task Invoke (HttpContext context, RequestRedirectManager requestRedirectManager)
         {
-            if(context.Request.Path.Value.Contains("loginService"))
+            if(context.Request.Path.Value.Contains("login"))
             {
                 await _next(context);
             } 

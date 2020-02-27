@@ -30,7 +30,7 @@ namespace Gateway.Controllers
 
         [Route("login")]
         [HttpPost]
-        public async Task<IActionResult> Login(LoginRequest request)
+        public IActionResult Login(LoginRequest request)
         {
             LoginResponse response = new LoginResponse()
             {
