@@ -29,19 +29,10 @@ namespace Disaster
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<Mqtt_Settings>(options =>
-            {
-                options.ClientId = "RSCD_DisasterModule";
-                options.Host = "10.6.32.103";
-                options.SuscribeTopic = "RSCD/Disaster/#";
-            });
-
             services.AddModuleConfigurations(Configuration, _hostEnvoirment);
-            services.AddScoped<DB_Context>();
-            services.AddHostedService<MqttSubscriber>();
-            services.AddScoped<MqttPublisher>();
-            services.AddScoped<DisasterReport_BL>();
-            services.AddScoped<IReportedDisasterCollection, ReportDisaster_CM>();
+            services.AddMqttServices(Configuration);
+            services.AddMongoServices();
+            services.AddReportDisasterServices();
             services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 

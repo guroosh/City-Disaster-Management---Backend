@@ -37,19 +37,10 @@ namespace Registration
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<Mqtt_Settings>(options =>
-            {
-                options.ClientId = "RSCD_RegistrationModule";
-                options.Host = "localhost";
-                options.SuscribeTopic = "RSCD/Registration/#";
-            });
-
             services.AddModuleConfigurations(Configuration,_hostEnvoirment);
-            services.AddScoped<DB_Context>();
-            services.AddHostedService<MqttSubscriber>();
-            services.AddScoped<MqttPublisher>();
-            services.AddScoped<Registration_BL>();
-            services.AddScoped<IUsersCollection,Registration_CM>();
+            services.AddMqttServices(Configuration);
+            services.AddRegistartionServices();
+            services.AddMongoServices();
             services.AddMvc(option => option.EnableEndpointRouting = false);
         }
 

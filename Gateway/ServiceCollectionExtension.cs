@@ -1,9 +1,13 @@
 ﻿using Gateway.BusinessLogic;
 using Gateway.DataAccess;
+using Gateway.DataAccess.Manager;
+using Gateway.DataAccess.Repository;
 using Gateway.Handlers.Managers;
+using Gateway.Mqtt;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RSCD.Model.Configration;
+using RSCD.Mqtt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +17,6 @@ namespace Gateway
 {
     public static class ServiceCollectionExtension
     {
-
         public static IServiceCollection AddAuthenticationConfigurations(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<Auth_Config>(options =>
@@ -51,6 +54,7 @@ namespace Gateway
         public static IServiceCollection AddLoginServices(this IServiceCollection services)
         {
             services.AddScoped<Login_BL>();
+            services.AddScoped<IUserCredentialCollection, UserCredential_CM>();
             return services;
         }
 
@@ -58,6 +62,20 @@ namespace Gateway
         {
             services.AddSingleton<RoutingManager>();
             services.AddScoped<RequestRedirectManager>();
+            return services;
+        }
+
+        public static IServiceCollection AddMqttServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            
+            services.Configure<Mqtt_Settings>(options =>
+            {
+                options.ClientId = configuration.GetSection("AuthConfiguration:IssuedTo").Value;
+                options.Host = configuration.GetSection("AuthConfiguration:IssuedTo").Value;
+                options.SuscribeTopic = configuration.GetSection("AuthConfiguration:IssuedTo").Value;
+            });
+            services.AddHostedService<MqttSubscriber>();
+            services.AddScoped<MqttPublisher>();
             return services;
         }
     }
