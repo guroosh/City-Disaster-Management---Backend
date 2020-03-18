@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Registration.BusinessLogic;
-using Registration.DataAccess.Manager;
-using Registration.DataAccess.Repository;
-using Registration.DataEntry.DataAccess.Context;
-using Registration.Mqtt;
+using RescueTeam.BusinessLogic;
+using RescueTeam.DataAccess.Context;
+using RescueTeam.DataAccess.Manager;
+using RescueTeam.DataAccess.Repository;
+using RescueTeam.Mqtt;
 using RSCD.Model.Configration;
 using RSCD.Mqtt;
 using System;
@@ -12,18 +12,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Registration
+namespace RescueTeam
 {
     public static class ServiceCollectionExtension
     {
         public static IServiceCollection AddMqttServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<Mqtt_Settings>(options =>
-            {
-                options.ClientId = "RSCD_RegistrationModule";
-                options.Host = "localhost";
-                options.SuscribeTopic = "RSCD/Registration/#";
-            });
             services.Configure<Mqtt_Settings>(options =>
             {
                 options.ClientId = configuration.GetSection("AuthConfiguration:IssuedTo").Value;
@@ -35,12 +29,12 @@ namespace Registration
             return services;
         }
 
-        public static IServiceCollection AddRegistartionServices(this IServiceCollection services)
+        public static IServiceCollection AddRescueTeamServices(this IServiceCollection services)
         {
-            services.AddScoped<Registration_BL>();
-            services.AddScoped<IUsersCollection, Registration_CM>();
+            services.AddScoped<RescueTeam_BL>();
+            services.AddScoped<IRescueTeamCollection, RescueTeam_CM>();
             return services;
-        }  
+        }
 
         public static IServiceCollection AddMongoServices(this IServiceCollection services)
         {
@@ -48,4 +42,5 @@ namespace Registration
             return services;
         }
     }
+}
 }
