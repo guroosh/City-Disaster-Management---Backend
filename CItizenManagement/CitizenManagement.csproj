@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="BusinessLogic\" />
+    <Folder Include="DataAccess\Context\" />
+    <Folder Include="DataAccess\Manager\" />
+    <Folder Include="DataAccess\Repostitory\" />
+    <Folder Include="Model\API\" />
+    <Folder Include="Model\DB\" />
+    <Folder Include="Mqtt\" />
+  </ItemGroup>
+
+
+</Project>
