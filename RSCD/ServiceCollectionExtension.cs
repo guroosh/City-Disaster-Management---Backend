@@ -11,6 +11,9 @@ namespace RSCD
         public static IServiceCollection AddModuleConfigurations(this IServiceCollection services, IConfiguration configuration, string env)
         {
             string deviceId = configuration.GetSection($"DeviceId").Value;
+            Console.WriteLine(deviceId);
+            Console.WriteLine((env == "Development") ? configuration.GetSection($"MongoConnection:{env}:ConnectionString:{deviceId}").Value : configuration.GetSection($"MongoConnection:{env}:ConnectionString").Value);
+
             services.Configure<DB_Settings>(options =>
             {
                 options.DE_ConnectionString = (env == "Development") ? configuration.GetSection($"MongoConnection:{env}:ConnectionString:{deviceId}").Value : configuration.GetSection($"MongoConnection:{env}:ConnectionString").Value;

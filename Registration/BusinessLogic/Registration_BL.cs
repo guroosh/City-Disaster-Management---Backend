@@ -30,7 +30,7 @@ namespace Registration.BusinessLogic
         public async Task<bool> RegisterCommonUser(RegisterCommonUserRequest request)
         {
             var copier = new ClassValueCopier();
-            Users newUser = copier.ConvertAndCopy<Users, RegisterCommonUserRequest>(request);
+            Users newUser = copier.ConvertAndCopy<Users, RegisterCommonUserRequest>(request); 
             newUser.Role = "CommonUser";
             newUser.IsCommonUser = true;
             newUser = await _usersCollection.RegisterUserAsync(newUser);
