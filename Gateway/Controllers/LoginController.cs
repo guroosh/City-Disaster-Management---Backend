@@ -8,7 +8,7 @@ using RSCD.Models.API;
 using Gateway.BusinessLogic;
 using Gateway.Model.API;
 
-namespace Gateway.Controllers
+namespace Gateway.Controllers  
 {
     [Route("[controller]")]
     [ApiController]

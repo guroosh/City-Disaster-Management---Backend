@@ -28,7 +28,7 @@ namespace Registration.DataAccess.Manager
             }
         }
 
-        public async Task<string> RegisterUserAsync(Users document)
+        public async Task<Users> RegisterUserAsync(Users document)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Registration.DataAccess.Manager
                 document.IsActive = true;
                 await _context.UsersCollection.InsertOneAsync(document);
                 
-                return document.ReferenceCode;
+                return document;
             }
             catch (Exception ex)
             {

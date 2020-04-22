@@ -7,7 +7,6 @@ using Registration.Model.DB;
 using Registration.DataAccess.Repository;
 using RSCD.Models.API;
 using RSCD.Model.Custom.ExternalModel.Registration;
-using RSCD.Model.Message;
 using Newtonsoft.Json;
 using RSCD.Mqtt;
 
@@ -34,9 +33,8 @@ namespace Registration.BusinessLogic
             Users newUser = copier.ConvertAndCopy<Users, RegisterCommonUserRequest>(request);
             newUser.Role = "CommonUser";
             newUser.IsCommonUser = true;
-            newUser.ReferenceCode = await _usersCollection.RegisterUserAsync(newUser);
-            bool result = newUser.ReferenceCode.Length != 0;
-            
+            newUser = await _usersCollection.RegisterUserAsync(newUser);
+            bool result = newUser != null;
             if (result) 
             {
                 await PublishUserCredentialAsync(newUser);
@@ -49,8 +47,8 @@ namespace Registration.BusinessLogic
             var copier = new ClassValueCopier();
             Users newUser = copier.ConvertAndCopy<Users, RegisterAdminUserRequest>(request);
             newUser.IsCommonUser = false;
-            string referenceCode = await _usersCollection.RegisterUserAsync(newUser);
-            bool result = referenceCode.Length != 0;
+            newUser = await _usersCollection.RegisterUserAsync(newUser);
+            bool result = newUser != null;
 
             if (result)
             {
@@ -124,10 +122,8 @@ namespace Registration.BusinessLogic
 
         private async Task<bool> PublishUserCredentialAsync(Users newUser)
         {
-            var copier = new ClassValueCopier();
-            NewUser loginUser = copier.ConvertAndCopy<NewUser, Users>(newUser);
-            string data = JsonConvert.SerializeObject(loginUser);
-            await Mqtt.MqttPublish("RSCD/Message/AddNewUser", data);
+            string data = JsonConvert.SerializeObject(newUser);
+            await Mqtt.MqttPublish("RSCD/Message/Registration/userCreated", data);
             return true;
         }
 
