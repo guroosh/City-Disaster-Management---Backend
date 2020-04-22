@@ -12,5 +12,6 @@ namespace RSCD.DAL
         Task<List<Collection>> GetAllAsync(string getDocs = "active");
         Task<Collection> GetAsync(string id);
         Task<bool> DeleteAsync(string id, string userCode, string reason = "");
+        Task<bool> AddAsync(global::RescueTeam.DataAccess.Repository.OfficerDetails.AdminUser newAdmin);
     }
 }

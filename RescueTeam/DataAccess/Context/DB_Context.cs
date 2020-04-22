@@ -12,12 +12,12 @@ namespace RescueTeam.DataAccess.Context
 {
     public class DB_Context : MongoContext
     {
-        public IMongoCollection<AssistanceRequired> RescueTeamCollection
+        public IMongoCollection<AdminDetails> RescueTeamCollection
         {
             get
             {
 
-                return _database.GetCollection<AssistanceRequired>("rescueTeamCollection");
+                return _database.GetCollection<AdminDetails>("rescueTeamCollection");
             }
         }
 

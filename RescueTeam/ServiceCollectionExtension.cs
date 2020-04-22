@@ -32,7 +32,7 @@ namespace RescueTeam
         public static IServiceCollection AddRescueTeamServices(this IServiceCollection services)
         {
             services.AddScoped<RescueTeam_BL>();
-            services.AddScoped<IRescueTeamCollection, RescueTeam_CM>();
+            services.AddScoped<IOfficerDetailCollection, RescueTeam_CM>();
             return services;
         }
 

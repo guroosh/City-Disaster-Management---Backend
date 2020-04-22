@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 
 namespace RescueTeam.DataAccess.Manager
 {
-    public class RescueTeam_CM : IRescueTeamCollection
+    public class RescueTeam_CM : IOfficerDetailCollection
     {
         private readonly DB_Context _context;
 
-        public RescueTeam_CM(DB_Context context)
+        public RescueTeam_CM()
         {
-            _context = context;
         }
+
+            
 
         private string _collectionCodePrefix
         {
@@ -25,7 +26,20 @@ namespace RescueTeam.DataAccess.Manager
             }
         }
 
-        public Task<bool> AddAsync(AssistanceRequired document)
+        string IOfficerDetailCollection._collectionCodePrefix => throw new NotImplementedException();
+
+        public Task<bool> AddAsync(OfficerDetails document)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> AddAsync(VerifiedDisasterReport newReport)
+        {
+            throw new NotImplementedException();
+        }
+
+       
+        public Task<bool> AddResourceAsync(ResourceAllocation newResource)
         {
             throw new NotImplementedException();
         }
@@ -35,17 +49,27 @@ namespace RescueTeam.DataAccess.Manager
             throw new NotImplementedException();
         }
 
-        public Task<List<AssistanceRequired>> GetAllAsync(string getDocs = "active")
+        public Task<List<OfficerDetails>> GetAllAsync(string getDocs = "active")
         {
             throw new NotImplementedException();
         }
 
-        public Task<AssistanceRequired> GetAsync(string id)
+        public Task<OfficerDetails> GetAsync(string id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(AssistanceRequired document)
+        public Task<bool> GetAsync(OfficerDetails newAdmin)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<OfficerDetails>> GetDetails(string department, int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateAsync(OfficerDetails document)
         {
             throw new NotImplementedException();
         }

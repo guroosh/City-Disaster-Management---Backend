@@ -41,7 +41,7 @@ namespace RescueTeam.Mqtt
                             // pass it to the handler class
                             var bl = scope.ServiceProvider.GetRequiredService<RescueTeam_BL>();
                             var rescueTeamData = Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceAllocation>(data);
-                            var result = bl.UpdateDocumentAsync(rescueTeamData);
+                            var result = bl.ResourceAllocationAsync(rescueTeamData);
                         }
                     }
                 }
