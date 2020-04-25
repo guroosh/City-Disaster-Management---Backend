@@ -18,16 +18,32 @@ namespace Gateway.DataAccess.Manager
         }
         public async Task<bool> AddAsync(UserCredentials document)
         {
-            document.CreatedAt = DateTime.Now.ToString();
-            document.LastUpdatedAt = "";
-            document.IsActive = true;
-            await _context.UserCredentialCollection.InsertOneAsync(document);
-            return true;
+           try
+            {
+                Console.WriteLine(document);
+                document.CreatedAt = DateTime.Now.ToString();
+                document.LastUpdatedAt = "";
+                document.IsActive = true;
+                await _context.UserCredentialCollection.InsertOneAsync(document);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw ex;
+            }
         }
 
-        public Task<bool> CheckUserExistence(string userCode)
+        public async Task<UserCredentials> CheckUserExistence(string loginId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context.UserCredentialCollection.Find(doc => doc.EmailId == loginId).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            };
         }
 
         public Task<bool> DeleteAsync(string id, string userCode, string reason = "")
@@ -40,9 +56,16 @@ namespace Gateway.DataAccess.Manager
             throw new NotImplementedException();
         }
 
-        public Task<UserCredentials> GetAsync(string id)
+        public async Task<UserCredentials> GetAsync(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context.UserCredentialCollection.Find(doc => doc.ReferenceCode == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            };
         }
 
         public async Task<bool> UpdateAsync(UserCredentials document)

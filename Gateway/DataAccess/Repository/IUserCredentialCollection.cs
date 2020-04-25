@@ -10,7 +10,8 @@ namespace Gateway.DataAccess.Repository
 {
     public interface IUserCredentialCollection:IDataRepository<UserCredentials>
     {
-        Task<bool> CheckUserExistence(string userCode);
+        Task<UserCredentials> CheckUserExistence(string loginId);
+
         
     }
    

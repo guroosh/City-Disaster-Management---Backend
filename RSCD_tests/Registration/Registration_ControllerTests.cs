@@ -37,7 +37,7 @@ namespace RSCD_tests.Registration
             MockRequest.Object.IsVolunteering =true;
             MockRequest.Object.VolunteeringField = "";
 
-            ActionResponse res = new ActionResponse(StatusCodes.Status500InternalServerError);
+            ActionResponse res = new ActionResponse(StatusCodes.Status200OK);
 
             var registrationController = new RegistrationController(ServiceProvider.GetRequiredService<Registration_BL>());
             //Act
@@ -75,8 +75,8 @@ namespace RSCD_tests.Registration
             MockRequest.Object.Password = "";
             MockRequest.Object.PhoneNumber = "";
             MockRequest.Object.UserCode = "";
-            MockRequest.Object.GovermentIdNumber = "";
-            MockRequest.Object.GovermentIdType = "";
+            MockRequest.Object.GovernmentIdNumber = "";
+            MockRequest.Object.GovernmentIdType = "";
             MockRequest.Object.UserCode = "";
             MockRequest.Object.CurrentUserCode = "";
             ActionResponse res = new ActionResponse(StatusCodes.Status500InternalServerError);
@@ -173,7 +173,7 @@ namespace RSCD_tests.Registration
             services.AddHostedService<MqttSubscriber>();
             services.AddScoped<MqttPublisher>();
             services.AddScoped<Registration_BL>();
-            services.AddScoped<IUsersCollection, Registration_CM>();
+            services.AddScoped<IUsersCollection, Users_CM>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
         }
     }

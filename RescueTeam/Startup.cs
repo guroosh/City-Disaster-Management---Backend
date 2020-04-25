@@ -32,7 +32,7 @@ namespace RescueTeam
             services.AddModuleConfigurations(Configuration, _hostEnvoirment);
             services.AddMqttServices(Configuration);
             services.AddMongoServices();
-            services.AddRescueTeamServices();
+            services.AddOfficerDetailsServices();
             services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 

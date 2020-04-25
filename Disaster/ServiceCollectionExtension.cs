@@ -20,9 +20,9 @@ namespace Disaster
         {
             services.Configure<Mqtt_Settings>(options =>
             {
-                options.ClientId = configuration.GetSection("AuthConfiguration:IssuedTo").Value;
-                options.Host = configuration.GetSection("AuthConfiguration:IssuedTo").Value;
-                options.SuscribeTopic = configuration.GetSection("AuthConfiguration:IssuedTo").Value;
+                options.ClientId = configuration.GetSection("Mqtt:ClientId").Value;
+                options.Host = configuration.GetSection("Mqtt:Host").Value;
+                options.SuscribeTopic = configuration.GetSection("Mqtt:SuscribeTopic").Value;
             });
             services.AddHostedService<MqttSubscriber>();
             services.AddScoped<MqttPublisher>();
@@ -33,6 +33,13 @@ namespace Disaster
         {
             services.AddScoped<DisasterReport_BL>();
             services.AddScoped<IReportedDisasterCollection, ReportDisaster_CM>();
+            return services;
+        }
+
+        public static IServiceCollection AddUsersServices(this IServiceCollection services)
+        {
+            services.AddScoped<Users_BL>();
+            services.AddScoped<IUsersCollection, UsersDetail_CM>();
             return services;
         }
 

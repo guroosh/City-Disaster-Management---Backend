@@ -13,9 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSCD", "RSCD\RSCD.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSCD_tests", "RSCD_tests\RSCD_tests.csproj", "{38F97882-06D6-4703-9A2E-C66711579DBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CitizenManagement", "CItizenManagement\CitizenManagement.csproj", "{5EEC3B67-4F1B-4C8E-AF5A-4C3E5345AC5D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RescueTeam", "RescueTeam\RescueTeam.csproj", "{C783B6E7-0035-4CA5-85E4-1BE28D57C062}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RescueTeam", "RescueTeam\RescueTeam.csproj", "{C783B6E7-0035-4CA5-85E4-1BE28D57C062}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +41,6 @@ Global
 		{38F97882-06D6-4703-9A2E-C66711579DBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38F97882-06D6-4703-9A2E-C66711579DBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38F97882-06D6-4703-9A2E-C66711579DBA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5EEC3B67-4F1B-4C8E-AF5A-4C3E5345AC5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EEC3B67-4F1B-4C8E-AF5A-4C3E5345AC5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EEC3B67-4F1B-4C8E-AF5A-4C3E5345AC5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EEC3B67-4F1B-4C8E-AF5A-4C3E5345AC5D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C783B6E7-0035-4CA5-85E4-1BE28D57C062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C783B6E7-0035-4CA5-85E4-1BE28D57C062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C783B6E7-0035-4CA5-85E4-1BE28D57C062}.Release|Any CPU.ActiveCfg = Release|Any CPU

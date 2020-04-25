@@ -29,10 +29,16 @@ namespace RescueTeam
             return services;
         }
 
-        public static IServiceCollection AddRescueTeamServices(this IServiceCollection services)
+        public static IServiceCollection AddOfficerDetailsServices(this IServiceCollection services)
         {
             services.AddScoped<RescueTeam_BL>();
             services.AddScoped<IOfficerDetailCollection, RescueTeam_CM>();
+            return services;
+        }
+
+        public static IServiceCollection AddVerifiedDisasterReportServices(this IServiceCollection services)
+        {
+            services.AddScoped<IVerifiedDisasterReportCollection, VerifiedDisasterReport_CM>();
             return services;
         }
 
@@ -43,4 +49,4 @@ namespace RescueTeam
         }
     }
 }
-}
+

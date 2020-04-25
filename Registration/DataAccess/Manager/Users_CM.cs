@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Registration.DataAccess.Manager
 {
-    public class Registration_CM : IUsersCollection
+    public class Users_CM : IUsersCollection
     {
         private readonly DB_Context _context;
 
-        public Registration_CM(DB_Context context)
+        public Users_CM (DB_Context context)
         {
             _context = context;
         }
@@ -120,9 +120,25 @@ namespace Registration.DataAccess.Manager
             }
         }
 
-        Task<bool> IDataRepository<Users>.AddAsync(Users document)
+        // Function not used
+
+        public Task<bool> AddAsync(Users document)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> CheckUserExistance(string emailId)
+        {
+            try
+            {
+                var user = await _context.UsersCollection.Find(doc => doc.EmailId == emailId).FirstOrDefaultAsync();
+                return user == null;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

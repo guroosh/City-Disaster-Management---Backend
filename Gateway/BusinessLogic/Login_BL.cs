@@ -12,9 +12,9 @@ using Gateway.Model.DB;
 using Gateway.Model.API;
 using RSCD.Helper;
 using Gateway.DataAccess.Repository;
-using RSCD.Model.Message;
 using RSCD.BLL;
-using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
+using RSCD.Model.Message;
 
 namespace Gateway.BusinessLogic
 {
@@ -32,8 +32,9 @@ namespace Gateway.BusinessLogic
         {
             try
             {
-                var checklogin = await _userCredentialCollection.GetAsync(request.LoginId);
-                if(checklogin.Password == "")
+                var checklogin = await _userCredentialCollection.CheckUserExistence(request.LoginId);
+                
+                if(checklogin.Password == checklogin.Password)
                 {
                     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authConfig.SecurityKey));
                     var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
@@ -59,43 +60,49 @@ namespace Gateway.BusinessLogic
                     {
                         AccessToken = tokenString,
                         ReferenceCode = checklogin.ReferenceCode,
-                       
+                        IsCommonUser = checklogin.IsCommonUser
                     };
+
                     return access;
                 }
                 else
                 {
-                    throw new Exception();
+                    throw new Exception("Failed to validate");
                 }
 
             }
             catch(NullReferenceException)
             {
                 // user does not exist
-                throw new Exception();
+                throw new Exception("Null exception");
             }
         }
-       
+
         public async Task<bool> CreateAsync(object request)
         {
-            NewUser request_ = (NewUser)request;
+            UserDetailMessage request_ = (UserDetailMessage)request;
             var copier = new ClassValueCopier();
-            UserCredentials userCredentials = copier.ConvertAndCopy<UserCredentials, NewUser>(request_);
+            UserCredentials userCredentials = copier.ConvertAndCopy<UserCredentials, UserDetailMessage>(request_);
             bool result = await _userCredentialCollection.AddAsync(userCredentials);
             return result;
         }
 
         public async Task<bool> UpdateDocumentAsync(object request)
         {
-            NewUser request_ = (NewUser)request;
+            // recive the request
+            UserDetailMessage request_ = (UserDetailMessage)request;
             var copier = new ClassValueCopier();
-            UserCredentials userCredentials = copier.ConvertAndCopy<UserCredentials, NewUser>(request_);
-            userCredentials.LastUpdatedBy = request_.ReferenceCode;
-            userCredentials.LastUpdatedAt = DateTime.Now.ToString();
-            bool result = await _userCredentialCollection.UpdateAsync(userCredentials);
+            UserCredentials oldUserCredentials = await _userCredentialCollection.GetAsync(request_.ReferenceCode);
+            //update the credentials
+            UserCredentials updatedCredentials = copier.ConvertAndCopy(request_, oldUserCredentials);
+            updatedCredentials.LastUpdatedBy = request_.ReferenceCode;
+            updatedCredentials.LastUpdatedAt = DateTime.Now.ToString();
+            //push to DB
+            bool result = await _userCredentialCollection.UpdateAsync(updatedCredentials);
             return result;
         }
 
+        //functions below are not used --- added due to inheritance
         public Task<bool> DeleteDocumentAsync(object request)
         {
             throw new NotImplementedException();
@@ -103,8 +110,6 @@ namespace Gateway.BusinessLogic
 
         public Task<object> GetDocumentAsync(object request)
         {
-            //convert to our need
-            //return obj of userCredentiAL
             throw new NotImplementedException();
         }
 
@@ -112,5 +117,5 @@ namespace Gateway.BusinessLogic
         {
             throw new NotImplementedException();
         }
-    }   
+    }
 }

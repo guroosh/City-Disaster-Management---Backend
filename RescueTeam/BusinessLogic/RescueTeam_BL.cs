@@ -4,9 +4,13 @@ using RescueTeam.Model.API;
 using RescueTeam.Model.DB;
 using RSCD.BLL;
 using RSCD.Helper;
+using RSCD.Model.Custom.MinimalDetails;
+using RSCD.Model.Message;
+using RSCD.Models.API;
 using RSCD.Mqtt;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,93 +19,143 @@ namespace RescueTeam.BusinessLogic
     public class RescueTeam_BL : IBusinessLogic
     {
 
-        private readonly IOfficerDetailCollection RescueTeamCollection;
+        private readonly IOfficerDetailCollection _officerDetailsCollection;
+        private readonly IVerifiedDisasterReportCollection _verifiedDisasterReportCollection;
         private readonly MqttPublisher Mqtt;
 
-        public RescueTeam_BL(IOfficerDetailCollection rescueTeamCollection, MqttPublisher mqtt)
+        public RescueTeam_BL(IOfficerDetailCollection officerDetailsCollection, IVerifiedDisasterReportCollection verifiedDisasterReportCollection,MqttPublisher mqtt)
         {
-            RescueTeamCollection = rescueTeamCollection;
+            _officerDetailsCollection = officerDetailsCollection;
+            _verifiedDisasterReportCollection = verifiedDisasterReportCollection;
             Mqtt = mqtt;
         }
 
-        public async Task<bool> CreateAdminAsync(AdminUserRequest request)
+
+
+        public async void ResourceAllocationAsync(VerifiedDisasterMessage request)
         {
             var copier = new ClassValueCopier();
-            OfficerDetails newAdmin = copier.ConvertAndCopy<OfficerDetails, AdminUserRequest>(request);
-            bool result = await RescueTeamCollection.GetAsync(newAdmin);
-            return result;
+            VerifiedDisasterReport newReport = copier.ConvertAndCopy<VerifiedDisasterReport, VerifiedDisasterMessage>(request);
+            newReport.AssignedOfficers = new List<string>();
+            // select the team count based on count
+            int count = request.ScaleOfDisaster switch
+            {
+                "low" => 2,
+                "Medium" => 4,
+                "High" => 6,
+                _ => 2,
+            };
+
+
+            // Fetch the assigning officer details
+            List<OfficerDetails> officersList = new List<OfficerDetails>();
+            officersList.AddRange((request.MedicalAssistanceRequired) ? await _officerDetailsCollection.GetOfficerDetails("Medical", count) : new List<OfficerDetails>());
+            officersList.AddRange((request.TrafficPoliceAssistanceRequired) ? await _officerDetailsCollection.GetOfficerDetails("Traffic", count) : new List<OfficerDetails>());
+            officersList.AddRange((request.FireBrigadeAssistanceRequired) ? await _officerDetailsCollection.GetOfficerDetails("FireBrigade", count) : new List<OfficerDetails>());
+            officersList.AddRange(await _officerDetailsCollection.GetOfficerDetails("Law", count));
+
+
+
+            foreach (OfficerDetails officer in officersList)
+            {
+                try
+                {
+                    // add the assign
+                    newReport.AssignedOfficers.Add(officer.ReferenceCode);
+                    officer.IsOfficerAssigned = true;
+                    bool updateResult = await _officerDetailsCollection.UpdateAsync(officer);
+                    //send notification introducing a pipeline or direct 
+                }
+                catch (NullReferenceException)
+                {
+                    continue;
+                }
+            }
+            bool result = await _verifiedDisasterReportCollection.AddAsync(newReport);
             
         }
-        public async Task<bool> UpdateAdminAsync(UpdateAdminUserRequest request)
+
+        public async Task<bool> AllocateAdditionalResourceAsync(AdditionalResourcesRequest request)
         {
-            OfficerDetails oldUser = await RescueTeamCollection.GetAsync(request.UserCode);
+            var disaster = await _verifiedDisasterReportCollection.GetAsync(request.ReferenceCode);
+
+            // get the required officer
+            List<OfficerDetails> officersList = await _officerDetailsCollection.GetOfficerDetails(request.Department, request.AdditionalUnits);
+            foreach (OfficerDetails officer in officersList)
+            {
+                try
+                {
+                    // add the assign
+                    disaster.AssignedOfficers.Add(officer.ReferenceCode);
+                    officer.IsOfficerAssigned = true;
+                    bool updateResult = await _officerDetailsCollection.UpdateAsync(officer);
+                    //send notification introducing a pipeline or direct 
+                }
+                catch (NullReferenceException)
+                {
+                    continue;
+                }
+            }
+            Trace.WriteLine(disaster.AssignedOfficers);
+            return await _verifiedDisasterReportCollection.UpdateAsync(disaster);
+        }
+
+        public async Task<bool> ResourceDeallocationAsync(ResourceDeallocationRequest request)
+        {
+            var officer = await _officerDetailsCollection.GetAsync(request.OfficerReferenceCode);
+            officer.IsOfficerAssigned = false;
+            //send notification
+            return await _officerDetailsCollection.UpdateAsync(officer);
+        }
+
+        public async Task<List<AdminUserDetails_minimal>> GetAllocatedOfficersAsync(GeneralFetchRequest request)
+        {
+            var disaster = await _verifiedDisasterReportCollection.GetAsync(request.Code);
+
             var copier = new ClassValueCopier();
-            OfficerDetails newUser = copier.ConvertAndCopy(request, oldUser);
-            newUser.LastUpdatedBy = request.CurrentUserCode;
-            newUser.LastUpdatedAt = DateTime.Now.ToString();
-            return await RescueTeamCollection.UpdateAsync(newUser);
+
+            List<AdminUserDetails_minimal> officerList = new List<AdminUserDetails_minimal>();
+
+            foreach(var officer in disaster.AssignedOfficers)
+            {
+                try
+                {
+                    officerList.Add(copier.ConvertAndCopy<AdminUserDetails_minimal, OfficerDetails>(await _officerDetailsCollection.GetAsync(officer)));
+                }
+                catch(Exception)
+                {
+                    continue;
+                }
+            }
+
+            return officerList;
+        }
+
+        public async Task<bool> CreateAsync(object request)
+        {
+            UserDetailMessage request_ = (UserDetailMessage)request;
+            var copier = new ClassValueCopier();
+            OfficerDetails newAdmin = copier.ConvertAndCopy<OfficerDetails, UserDetailMessage>(request_);
+            bool result = await _officerDetailsCollection.AddAsync(newAdmin);
+            return result;
         }
 
        
-        public async Task<bool> ResourceAllocationAsync(ResourceAllocationRequest request)
+
+
+        public async Task<bool> UpdateDocumentAsync(object request)
         {
+            UserDetailMessage request_ = (UserDetailMessage)request;
+            OfficerDetails oldUser = await _officerDetailsCollection.GetAsync(request_.ReferenceCode);
             var copier = new ClassValueCopier();
-            VerifiedDisasterReport newReport = copier.ConvertAndCopy<VerifiedDisasterReport, ResourceAllocationRequest> (request);
-            bool result = await RescueTeamCollection.AddAsync(newReport);
-            
-            try
-            {
-               
-                if (request.ScaleOfDisaster == "low")
-                {
-
-                    //allocate 1 unit ie 3 ppl of each requested dep
-                    var medicallist = RescueTeamCollection.GetDetails(request.MedicalAssistanceRequired, 3);
-                    var firelist = RescueTeamCollection.GetDetails(request.FireBrigadeAssistanceRequired, 3);
-                    var trafficlist = RescueTeamCollection.GetDetails(request.TrafficPoliceAssistanceRequired, 3);
-                    var otherlist = RescueTeamCollection.GetDetails(request.OtherResponseTeamRequired, 3);
-
-
-
-                }
-                else if(request.ScaleOfDisaster=="medium")
-                {
-                    var medicallist = RescueTeamCollection.GetDetails(request.MedicalAssistanceRequired, 6);
-                    var firelist = RescueTeamCollection.GetDetails(request.FireBrigadeAssistanceRequired, 6);
-                    var trafficlist = RescueTeamCollection.GetDetails(request.TrafficPoliceAssistanceRequired, 6);
-                    var otherlist = RescueTeamCollection.GetDetails(request.OtherResponseTeamRequired, 6);
-                }
-                else
-                {
-                    var medicallist = RescueTeamCollection.GetDetails(request.MedicalAssistanceRequired, 9);
-                    var firelist = RescueTeamCollection.GetDetails(request.FireBrigadeAssistanceRequired, 9);
-                    var trafficlist = RescueTeamCollection.GetDetails(request.TrafficPoliceAssistanceRequired, 9);
-                    var otherlist = RescueTeamCollection.GetDetails(request.OtherResponseTeamRequired, 9);
-                }
-                string data = JsonConvert.SerializeObject(request);
-                await Mqtt.MqttPublish("RSCD/Message/Admin/ResourceAllocation", data);
-               
-                var copier1 = new ClassValueCopier();
-                ResourceAllocation newResource = copier.ConvertAndCopy<ResourceAllocation, ResourceAllocationRequest>(request);
-                bool result1 = await RescueTeamCollection.AddResourceAsync(newResource);
-
-            }
-            catch (Exception)
-            {
-                
-                throw new Exception();
-            }
-
-            return true;
-        }
-          
-         public async Task<AdditionalResourceAllocationResponse> AllocateAdditionalResource(ResourceAllocationRequest request)
-        {
-            VerifiedDisasterReport report = await RescueTeamCollection.GetDocumentAsync(report);
-
+            OfficerDetails newUser = copier.ConvertAndCopy(request_, oldUser);
+            newUser.LastUpdatedAt = DateTime.Now.ToString();
+            return await _officerDetailsCollection.UpdateAsync(newUser);
         }
 
-        public Task<bool> CreateAsync(object request)
+
+        // function not used
+        public Task<object> GetDocumentAsync(object request)
         {
             throw new NotImplementedException();
         }
@@ -115,14 +169,7 @@ namespace RescueTeam.BusinessLogic
         {
             throw new NotImplementedException();
         }
-
-        public Task<object> GetDocumentAsync(ResourceAllocationRequest request)
-        {
-        }
-
-        public Task<bool> UpdateDocumentAsync(object request)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
+
+

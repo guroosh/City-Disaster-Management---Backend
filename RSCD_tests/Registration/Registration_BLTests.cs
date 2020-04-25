@@ -5,10 +5,11 @@ using Registration.DataAccess.Manager;
 using Registration.DataAccess.Repository;
 using Registration.DataEntry.DataAccess.Context;
 using Registration.Model.API;
+using Registration.Model.DB;
 using Registration.Mqtt;
 using RSCD.Model.Configration;
 using RSCD.Model.Custom;
-using RSCD.Model.Message;
+using RSCD.Models.API;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -24,59 +25,42 @@ namespace RSCD_tests.Registration
             services.Configure<Mqtt_Settings>(options =>
             {
                 options.ClientId = "RSCD_RegistrationModule";
-                options.Host = "localhost";
+                options.Host = "broker.hivemq.com";
                 options.SuscribeTopic = "RSCD/Registration/#";
             });
             services.Configure<DB_Settings>(options =>
             {
-                options.DE_ConnectionString = "";
-                options.DE_DataBase = "";
+                options.DE_ConnectionString = "mongodb://amrish_kulasekaran:kavi%40123@localhost:27017/?authSource=admin";
+                options.DE_DataBase = "rscd_db";
             });
             services.AddScoped<DB_Context>();
             services.AddHostedService<MqttSubscriber>();
             services.AddScoped<RSCD.Mqtt.MqttPublisher>();
             services.AddScoped<Registration_BL>();
-            services.AddScoped<IUsersCollection, Registration_CM>();
+            services.AddScoped<IUsersCollection, Users_CM>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
             ServiceProvider = services.BuildServiceProvider();
         }
 
-        [Fact]
-        public async Task CreateAsyncTest()
-        {
-            setupServices();
-            var MockRequest = new Mock<NewUser>();
-            MockRequest.Object.ReferenceCode = "Android";
-            MockRequest.Object.EmailId = "palkarm@tcd.ie";
-            MockRequest.Object.Password = "1234";
-            MockRequest.Object.IsCommonUser = true;
-
-            bool response = true;
-            var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
-
-            //Act
-
-            var result = await businessLogic.CreateAsync(MockRequest.Object);
-
-            //Assert
-            Assert.True(result);
-        }
         [Fact]
         public async Task RegisterCommonUserTest()
         {
             setupServices();
             
             var MockRequest = new Mock<RegisterCommonUserRequest>();
-            MockRequest.Object.EmailId = "";
-            MockRequest.Object.Name = new Name();
-            MockRequest.Object.Password = "";
-            MockRequest.Object.PhoneNumber = "";
+            MockRequest.Object.EmailId = "test2@gmail.com";
+            MockRequest.Object.Name = new Name()
+            {
+                FirstName = "Test",
+                LastName = "Tester"
+            };
+            MockRequest.Object.Password = "test@123";
+            MockRequest.Object.PhoneNumber = "9159154630";
             MockRequest.Object.VolunteeringField = "";
-            MockRequest.Object.GovernmentIdType = "";
-            MockRequest.Object.GovernmentIdNumber = "";
-            MockRequest.Object.GovernmentIdType = "";
+            MockRequest.Object.GovernmentIdType = "GNIB";
+            MockRequest.Object.GovernmentIdNumber = "HF54548";
 
-            bool response = true;
+
             var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
 
             //Act
@@ -93,13 +77,16 @@ namespace RSCD_tests.Registration
             setupServices();
 
             var MockRequest = new Mock<RegisterAdminUserRequest>();
-            MockRequest.Object.EmailId = "";
-            MockRequest.Object.Name = new Name();
-            MockRequest.Object.BadgeId = "";
-            MockRequest.Object.Department = "";
-            MockRequest.Object.Role = "";
+            MockRequest.Object.EmailId = "testAdmin@gmail.com";
+            MockRequest.Object.Name = new Name()
+            {
+                LastName = "Test",
+                FirstName = "Admin"
+            };
+            MockRequest.Object.BadgeId = "AGFRET4564";
+            MockRequest.Object.Department = "Medical";
+            MockRequest.Object.Role = "Officer";
             
-            bool response = true;
             var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
 
             //Act
@@ -115,16 +102,19 @@ namespace RSCD_tests.Registration
             setupServices();
 
             var MockRequest = new Mock<UpdateCommonUserRequest>();
-            MockRequest.Object.EmailId = "";
-            MockRequest.Object.Name = new Name();
-            MockRequest.Object.Password = "";
-            MockRequest.Object.PhoneNumber = "";
-            MockRequest.Object.GovermentIdNumber = "";
-            MockRequest.Object.GovermentIdType = "";
-            MockRequest.Object.CurrentUserCode = "";
-            MockRequest.Object.UserCode = "";
-            
-            bool response = true;
+
+            MockRequest.Object.EmailId = "test1@gmail.com";
+            MockRequest.Object.Name = new Name()
+            {
+                FirstName = "Test",
+                LastName = "Updated"
+            };
+            MockRequest.Object.Password = "test@123";
+            MockRequest.Object.PhoneNumber = "9159154630";
+            MockRequest.Object.GovernmentIdType = "GNIB";
+            MockRequest.Object.GovernmentIdNumber = "HF54548";
+            MockRequest.Object.UserCode = "USR523644";
+
             var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
 
             //Act
@@ -141,15 +131,17 @@ namespace RSCD_tests.Registration
             setupServices();
 
             var MockRequest = new Mock<UpdateAdminUserRequest>();
-            MockRequest.Object.EmailId = "";
-            MockRequest.Object.Name = new Name();
-            MockRequest.Object.Department = "";
-            MockRequest.Object.BadgeId = "";
-            MockRequest.Object.CurrentUserCode = "";
-            MockRequest.Object.UserCode = "";
-            MockRequest.Object.Role = "";
+            MockRequest.Object.EmailId = "testAdmin@gmail.com";
+            MockRequest.Object.Name = new Name()
+            {
+                LastName = "Updated",
+                FirstName = "Admin"
+            };
+            MockRequest.Object.BadgeId = "AGFRET4564";
+            MockRequest.Object.Department = "Medical";
+            MockRequest.Object.Role = "Officer";
+            MockRequest.Object.UserCode = "USR32191";
 
-            bool response = true;
             var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
 
             //Act
@@ -161,82 +153,24 @@ namespace RSCD_tests.Registration
         }
 
         [Fact]
-        public async Task DeleteDocumentAsyncTest()
-        {
-            setupServices();
-            var MockRequest = new Mock<NewUser>();
-            MockRequest.Object.ReferenceCode = "Android";
-            MockRequest.Object.EmailId = "palkarm@tcd.ie";
-            MockRequest.Object.Password = "1234";
-            MockRequest.Object.IsCommonUser = true;
-            bool response = false;
-            var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
-
-            //Act
-
-            var result = await businessLogic.DeleteDocumentAsync(MockRequest.Object);
-
-            //Assert
-            Assert.True(result);
-        }
-
-        [Fact]
         public async Task GetDocumentAsyncTest()
         {
             setupServices();
-            var MockRequest = new Mock<NewUser>();
-            MockRequest.Object.ReferenceCode = "Android";
-            MockRequest.Object.EmailId = "palkarm@tcd.ie";
-            MockRequest.Object.Password = "1234";
-            MockRequest.Object.IsCommonUser = true;
-            // bool response = false;
+            var MockRequest = new Mock<GeneralFetchRequest>();
+            MockRequest.Object.Code = "USR523644";
+
+
             var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
             //Act
 
             var result = await businessLogic.GetDocumentAsync(MockRequest.Object);
 
             //Assert
-            Assert.True((bool)result);
+            Assert.True(result != null);
         }
 
-        [Fact]
-        public async Task GetAllDocumentsAsyncTest()
-        {
-            setupServices();
-            var MockRequest = new Mock<NewUser>();
-            MockRequest.Object.ReferenceCode = "Android";
-            MockRequest.Object.EmailId = "palkarm@tcd.ie";
-            MockRequest.Object.Password = "1234";
-            MockRequest.Object.IsCommonUser = true;
-            //bool response = false;
-            var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
-
-            //Act
-            var result = await businessLogic.GetAllDocumentsAsync(MockRequest.Object);
-
-            //Assert
-            //Assert.True(result);
-        }
-        [Fact]
-        public async Task UpdateDocumentAsyncTest()
-        {
-            setupServices();
-            var MockRequest = new Mock<NewUser>();
-            MockRequest.Object.ReferenceCode = "Android";
-            MockRequest.Object.EmailId = "palkarm@tcd.ie";
-            MockRequest.Object.Password = "1234";
-            MockRequest.Object.IsCommonUser = true;
-            bool response = false;
-            var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
-
-            //Act
-
-            var result = await businessLogic.UpdateDocumentAsync(MockRequest.Object);
-
-            //Assert
-            Assert.True(result);
-
-        }
+        
+        
 
         [Fact]
 
@@ -244,16 +178,14 @@ namespace RSCD_tests.Registration
         {
             setupServices();
             var MockRequest = new Mock<UpdateVolunteeringPreferenceRequest>();
-            MockRequest.Object.CurrentUserCode = "";
             MockRequest.Object.IsVolunteering = true;
-            MockRequest.Object.UserCode = "";
-            MockRequest.Object.VolunteeringField = "";
-            bool response = false;
+            MockRequest.Object.UserCode = "USR523644";
+            MockRequest.Object.VolunteeringField = "Traffic";
+
             var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
 
             //Act
-
-            var result = await businessLogic.UpdateDocumentAsync(MockRequest.Object);
+            var result = await businessLogic.UpdateVolunteeringPreferenceAsync(MockRequest.Object);
 
             //Assert
             Assert.True(result);
@@ -263,13 +195,23 @@ namespace RSCD_tests.Registration
         public async Task PublishUserCredentialAsync()
         {
             setupServices();
-            var MockRequest = new Mock<NewUser>();
-            bool response = false;
+            var MockRequest = new Mock<Users>();
+            MockRequest.Object.EmailId = "testAdmin@gmail.com";
+            MockRequest.Object.Name = new Name()
+            {
+                LastName = "Updated",
+                FirstName = "Admin"
+            };
+            MockRequest.Object.BadgeId = "AGFRET4564";
+            MockRequest.Object.Department = "Medical";
+            MockRequest.Object.Role = "Officer";
+            MockRequest.Object.ReferenceCode = "USR32191";
+
             var businessLogic = ServiceProvider.GetRequiredService<Registration_BL>();
 
             //Act
 
-            var result = await businessLogic.UpdateDocumentAsync(MockRequest.Object);
+            var result = await businessLogic.PublishUserCredentialAsync(MockRequest.Object);
 
             //Assert
             Assert.True(result);

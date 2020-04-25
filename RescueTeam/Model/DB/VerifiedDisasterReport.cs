@@ -1,4 +1,5 @@
 ﻿using RSCD.Model.Custom;
+using System.Collections.Generic;
 
 namespace RescueTeam.Model.DB
 {
@@ -18,7 +19,9 @@ namespace RescueTeam.Model.DB
         public bool TrafficPoliceAssistanceRequired { get; set; }
         public bool FireBrigadeAssistanceRequired { get; set; }
         public string OtherResponseTeamRequired { get; set; }
+        public List<MapRoute> FireRoute { get; set; }
+        public List<string> AssignedOfficers { get; set; }
     }
-    
-    
+
+
 }

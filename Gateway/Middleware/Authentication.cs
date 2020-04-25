@@ -111,14 +111,16 @@ namespace Gateway.Middleware
             // -> check if channel is android
             // -> if url is to register common user return true
 
-            bool channelMatches = context.Response.Headers.TryGetValue("ChannelName", out StringValues channelName);
+            bool channelMatches = context.Request.Headers.TryGetValue("Channel", out StringValues channelName);
             if (channelName.Equals("Android"))
             {
-                List<string> pathArray = context.Request.Path.Value.Split("/").ToList();
-                pathArray.RemoveAt(0);
-                string endpoint = pathArray[1].ToLower();
-                string basePath = pathArray[0].ToLower();
-                return endpoint.ToLower().Equals("registerCu") && basePath.ToLower().Equals("Registration");
+
+                return context.Request.Path.Value == "/services/rs/registration/registerCu";
+                //List<string> pathArray = context.Request.Path.Value.Split("/").ToList();
+                //pathArray.RemoveAt(0);
+                //string endpoint = pathArray[1].ToLower();
+                //string basePath = pathArray[0].ToLower();
+                //return endpoint.ToLower().Equals("registerCu") && basePath.ToLower().Equals("Registration");
             }
             return false;
         }

@@ -11,7 +11,6 @@ using RSCD.Model.Configration;
 using RSCD.MQTT;
 using Newtonsoft.Json;
 using Gateway.BusinessLogic;
-using RSCD.Model.Message;
 
 namespace Gateway.Mqtt
 {
@@ -29,34 +28,34 @@ namespace Gateway.Mqtt
 
                 try
                 {
-                    if (topic == "RSCD/Message/AddNewUser")
+                    if (topic == "RSCD/Message/Registration/userCreated")
                     {
                         using (IServiceScope scope = serviceProvider.CreateScope())
                         {
                             // pass it to the handler class
                             var bl = scope.ServiceProvider.GetRequiredService<Login_BL>();
-                            var disasterdData = JsonConvert.DeserializeObject<NewUser>(data);
-                            var result = bl.CreateAsync(disasterdData);
+                            var userData = JsonConvert.DeserializeObject<RSCD.Model.Message.UserDetailMessage>(data);
+                            var result = bl.CreateAsync(userData);
                         }
                     }
-                    if (topic == "RSCD/Message/UpdateUser")
+                    if (topic == "RSCD/Message/Registration/userUpdated")
                     {
                         using (IServiceScope scope = serviceProvider.CreateScope())
                         {
                             // pass it to the handler class
                             var bl = scope.ServiceProvider.GetRequiredService<Login_BL>();
-                            var disasterdData = JsonConvert.DeserializeObject<NewUser>(data);
-                            var result = bl.UpdateDocumentAsync(disasterdData);
+                            //var disasterdData = JsonConvert.DeserializeObject<NewUser>(data);
+                            var result = bl.UpdateDocumentAsync("");
                         } 
                     }
-                    if (topic == "RSCD/Message/DeleteUser")
+                    if (topic == "RSCD/Message/Registration/userDeleted")
                     {
                         using (IServiceScope scope = serviceProvider.CreateScope())
                         {
                             // pass it to the handler class
                             var bl = scope.ServiceProvider.GetRequiredService<Login_BL>();
-                            var disasterdData = JsonConvert.DeserializeObject<NewUser>(data);
-                            var result = bl.DeleteDocumentAsync(disasterdData);
+                            //var disasterdData = JsonConvert.DeserializeObject<NewUser>(data);
+                            var result = bl.DeleteDocumentAsync("");
                         }
                     }
                 }

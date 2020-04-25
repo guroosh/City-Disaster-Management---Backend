@@ -9,6 +9,7 @@ using RSCD.Models.API;
 using RSCD.Model.Custom.ExternalModel.Registration;
 using Newtonsoft.Json;
 using RSCD.Mqtt;
+using RSCD.Model.Message;
 
 namespace Registration.BusinessLogic
 {
@@ -30,31 +31,47 @@ namespace Registration.BusinessLogic
         public async Task<bool> RegisterCommonUser(RegisterCommonUserRequest request)
         {
             var copier = new ClassValueCopier();
+            //check for used existance
+            var result = await  _usersCollection.CheckUserExistance(request.EmailId);
+
+            if (!result)
+            {
+                throw new Exception("User Exists");
+            }
+
+            //if no create user
             Users newUser = copier.ConvertAndCopy<Users, RegisterCommonUserRequest>(request); 
             newUser.Role = "CommonUser";
             newUser.IsCommonUser = true;
+            
+            //push to DB
             newUser = await _usersCollection.RegisterUserAsync(newUser);
-            bool result = newUser != null;
-            if (result) 
-            {
-                await PublishUserCredentialAsync(newUser);
-            }
-            return result;
+
+            //Send the userDetails to all the service
+            await PublishUserCredentialAsync(newUser);
+
+            
+            return true;
         }
 
         public async Task<bool> RegisterAdminUser(RegisterAdminUserRequest request)
         {
             var copier = new ClassValueCopier();
+            //check for used existance
+            var result = await _usersCollection.CheckUserExistance(request.EmailId);
+
+            if (!result)
+            {
+                throw new Exception("User Exists");
+            }
+
             Users newUser = copier.ConvertAndCopy<Users, RegisterAdminUserRequest>(request);
             newUser.IsCommonUser = false;
+            newUser.Password = newUser.BadgeId;
             newUser = await _usersCollection.RegisterUserAsync(newUser);
-            bool result = newUser != null;
 
-            if (result)
-            {
-                await PublishUserCredentialAsync(newUser);
-            }
-            return result;
+            await PublishUserCredentialAsync(newUser);
+            return true;
         }
         
         public async Task<bool> UpdateCommonUser(UpdateCommonUserRequest request)
@@ -120,11 +137,21 @@ namespace Registration.BusinessLogic
             return await _usersCollection.UpdateAsync(newuser);
         }
 
-        private async Task<bool> PublishUserCredentialAsync(Users newUser)
+        public async Task<bool> PublishUserCredentialAsync(Users newUser)
         {
-            string data = JsonConvert.SerializeObject(newUser);
-            await Mqtt.MqttPublish("RSCD/Message/Registration/userCreated", data);
-            return true;
+            try
+            {
+                var copier = new ClassValueCopier();
+                var message = copier.ConvertAndCopy<UserDetailMessage, Users>(newUser);
+                string data = JsonConvert.SerializeObject(message);
+                await Mqtt.MqttPublish("RSCD/Message/Registration/userCreated", data);
+                return true;
+            }
+            catch(Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         }

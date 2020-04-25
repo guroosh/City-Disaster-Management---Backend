@@ -34,10 +34,10 @@ namespace RSCD_tests.Gateway
             SetupServices();
             var MockRequest = new Mock<LoginRequest>();
             MockRequest.Object.Channel = "Android";
-            MockRequest.Object.LoginId = "palkarm@tcd.ie";
-            MockRequest.Object.Password = "1234";
+            MockRequest.Object.LoginId = "testmail@gmail.com";
+            MockRequest.Object.Password = "123";
 
-            ActionResponse res = new ActionResponse(StatusCodes.Status500InternalServerError);
+            ActionResponse res = new ActionResponse(StatusCodes.Status200OK);
 
             var loginController = new LoginController(ServiceProvider.GetRequiredService<Login_BL>());
 
@@ -55,19 +55,20 @@ namespace RSCD_tests.Gateway
             ServiceCollection services = new ServiceCollection();
             services.Configure<DB_Settings>(options =>
             {
-                options.DE_ConnectionString = "";
-                options.DE_DataBase = "";
+                options.DE_ConnectionString = "mongodb://amrish_kulasekaran:kavi%40123@localhost:27017/?authSource=admin";
+                options.DE_DataBase = "rscd_db";
             });
             services.Configure<Auth_Config>(options =>
             {
-                options.IssuedTo = "";
-                options.Issuer = "";
-                options.L1Key = "";
-                options.L1Token = "";
-                options.L2Token = "";
-                options.L3Token = "";
-                options.PayLoadKey = "";
-                options.SecurityKey = "";
+                options.IssuedTo = "Actors";
+                options.Issuer = "RSCD Admin";
+                options.L1Key = "RHluYXR0cmFsTDFUb2tlbktleTEyMzQ1";
+                options.L1Token = "RSCD-Token";
+                options.L2Token = "RSCD-JWT-Token";
+                options.L3Token = "RSCD-Module-Token";
+                options.PayLoadKey = "12d08eb0aa92b945965565b29d53ad1f15a55144ed0714ac56c34677ccbcb400";
+                options.SecurityKey = "GFsZ3VkaUthcnVwcGlhaEdhbmRoaVJKQmFsYWpp";
+
             });
             services.AddScoped<DB_Context>();
             services.AddScoped<IUserCredentialCollection, UserCredential_CM>();

@@ -12,5 +12,6 @@ namespace Registration.DataAccess.Repository
     {
         string _collectionCodePrefix { get; }
         Task<Users> RegisterUserAsync(Users document);
+        Task<bool> CheckUserExistance(string emailId);
     }
 }

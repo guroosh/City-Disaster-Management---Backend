@@ -15,8 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Disaster\Disaster.csproj" />
     <ProjectReference Include="..\Gateway\Gateway.csproj" />
     <ProjectReference Include="..\Registration\Registration.csproj" />
+    <ProjectReference Include="..\RescueTeam\RescueTeam.csproj" />
   </ItemGroup>
 
 </Project>

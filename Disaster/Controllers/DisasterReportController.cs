@@ -30,8 +30,17 @@ namespace Disaster.Controllers
         public async Task<IActionResult> ReportDisaster(ReportDisasterRequest request)
         {
             ActionResponse response;
-            bool result = await _businessLogic.CreateAsync(request);
-            response = new ActionResponse((result) ? StatusCodes.Status200OK : StatusCodes.Status500InternalServerError);
+            
+            try
+            {
+                bool result = await _businessLogic.CreateAsync(request);
+                response = new ActionResponse((result) ? StatusCodes.Status200OK : StatusCodes.Status422UnprocessableEntity);
+            }
+            catch (Exception ex)
+            {
+                response = new ActionResponse(StatusCodes.Status500InternalServerError);
+                response.StatusDescription += ex.Message.ToString();
+            }
             return StatusCode(response.StatusCode, response);
         }
 
@@ -40,8 +49,18 @@ namespace Disaster.Controllers
         public async Task<IActionResult> VerifiedDisaster(VerifiedDisasterRequest request)
         {
             ActionResponse response;
-            bool result = await _businessLogic.UpdateDocumentAsync(request);
-            response = new ActionResponse((result) ? StatusCodes.Status200OK : StatusCodes.Status500InternalServerError);
+
+            try
+            {
+                bool result = await _businessLogic.UpdateDocumentAsync(request);
+                response = new ActionResponse((result) ? StatusCodes.Status200OK : StatusCodes.Status422UnprocessableEntity);
+            }
+            catch (Exception ex)
+            {
+                response = new ActionResponse(StatusCodes.Status500InternalServerError);
+                response.StatusDescription += ex.Message.ToString();
+            }
+
             return StatusCode(response.StatusCode, response);
         }
     }

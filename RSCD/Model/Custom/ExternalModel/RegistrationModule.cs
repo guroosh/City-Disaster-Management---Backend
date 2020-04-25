@@ -7,6 +7,7 @@ namespace RSCD.Model.Custom.ExternalModel.Registration
 {
     public class CommonUser_EM
     {
+        public string ReferenceCode { get; set; }
         public Name Name { get; set; }
         public string EmailId { get; set; }
         public string Password { get; set; }
@@ -18,6 +19,7 @@ namespace RSCD.Model.Custom.ExternalModel.Registration
     }
     public class AdminUser_EM
     {
+        public string ReferenceCode { get; set; }
         public Name Name { get; set; }
         public string EmailId { get; set; }
         public string Password { get; set; }

@@ -16,6 +16,14 @@ namespace Disaster.DataAccess.Context
             }
         }
 
+        public IMongoCollection<ReportedDisaster> UsersDetailCollection
+        {
+            get
+            {
+                return _database.GetCollection<ReportedDisaster>("UsersDetailCollection");
+            }
+        }
+
         public DB_Context(IOptions<DB_Settings> options) : base(options.Value.DE_ConnectionString, options.Value.DE_DataBase)
         {
         }

@@ -15,10 +15,12 @@ namespace Disaster.BusinessLogic
     public class DisasterReport_BL : IBusinessLogic
     {
         private readonly IReportedDisasterCollection DisasterCollection;
+        private readonly Users_BL _usersBusinessLogic;
         private readonly MqttPublisher Mqtt;
-        public DisasterReport_BL(IReportedDisasterCollection disasterCollection, MqttPublisher mqtt)
+        public DisasterReport_BL(IReportedDisasterCollection disasterCollection, Users_BL usersBusinessLogic, MqttPublisher mqtt)
         {
             DisasterCollection = disasterCollection;
+            _usersBusinessLogic = usersBusinessLogic;
             Mqtt = mqtt;
         }
 
@@ -70,6 +72,7 @@ namespace Disaster.BusinessLogic
             var copier = new ClassValueCopier();
             var newDisaster = copier.ConvertAndCopy(request_, oldDisaster);
             newDisaster.LastUpdatedBy = request_.VerifiedBy;
+            newDisaster.IsClosed = false;
             bool result = await DisasterCollection.UpdateAsync(newDisaster);
             if (result)
             {

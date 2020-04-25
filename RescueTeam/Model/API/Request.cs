@@ -45,10 +45,14 @@ namespace RescueTeam.Model.API
     }
     public class AdditionalResourcesRequest
     {
-        public string DisasterID { get; set; }
+        public string ReferenceCode { get; set; }
         public string Department { get; set; }
-        public string AdditionalUnits { get; set; }
+        public int AdditionalUnits { get; set; }
+    }
 
-
+    public class ResourceDeallocationRequest
+    {
+        public string DisasterReferenceCode { get; set; }
+        public string OfficerReferenceCode { get; set; }
     }
 }

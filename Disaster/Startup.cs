@@ -33,6 +33,7 @@ namespace Disaster
             services.AddMqttServices(Configuration);
             services.AddMongoServices();
             services.AddReportDisasterServices();
+            services.AddUsersServices();
             services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 

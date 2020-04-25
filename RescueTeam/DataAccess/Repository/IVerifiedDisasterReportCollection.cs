@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace RescueTeam.DataAccess.Repository
 {
-    public interface IVerifiedDisasterReport : IDataRepository<VerifiedDisasterReport>
+    public interface IVerifiedDisasterReportCollection : IDataRepository<VerifiedDisasterReport>
     {
-        string _collectionCodePrefix { get; }
         Task<bool> ResourceAllocationAsync(ResourceAllocationRequest request);
 
     }
