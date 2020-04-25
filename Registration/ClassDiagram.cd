@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Registration.BusinessLogic.Registration_BL" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAQQAAAAQQAIAAAAQAAAAQgBAoAAAgA=</HashCode>
+      <FileName>BusinessLogic\Registration_BL.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_usersCollection" />
+      <Field Name="Mqtt" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Registration.Controllers.RegistrationController">
+    <Position X="8.75" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAQAAAAAAACIAEAAAAAAAAgBCAAAAAA=</HashCode>
+      <FileName>Controllers\RegistrationController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_businessLogic" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Registration.DataEntry.DataAccess.Context.DB_Context">
+    <Position X="18" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>DataAccess\Context\DB_Context.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="UsersCollection" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Registration.DataAccess.Manager.Users_CM" BaseTypeListCollapsed="true">
+    <Position X="18.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAAAAAAAARAAAAAgAAAEAAAAAAAgAAAAAIAAAAIA=</HashCode>
+      <FileName>DataAccess\Manager\Users_CM.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Registration.Model.API.UserDetailRquest">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\API\Request.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Model.API.RegisterCommonUserRequest" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAYEAQQAAAACACAAAAAAAAA=</HashCode>
+      <FileName>Model\API\Request.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Model.API.RegisterAdminUserRequest">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAEAAAAAYAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\API\Request.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Model.API.UpdateCommonUserRequest" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAQAYAAQQAAAACAAAAAAAAAAE=</HashCode>
+      <FileName>Model\API\Request.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Model.API.UpdateAdminUserRequest" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAgAAAAAAAEAAAAAYAEAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Model\API\Request.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Model.API.UpdateVolunteeringPreferenceRequest" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAACAAAAAAAAE=</HashCode>
+      <FileName>Model\API\Request.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Model.API.FetchCommonUserResponse" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Model\API\Response.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Model.API.FetchAdminUserResponse" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Model\API\Response.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Model.DB.Users">
+    <Position X="26.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAEIAAQAYEEQQAAAACACAAAAAAAAA=</HashCode>
+      <FileName>Model\DB\Users.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Mqtt.MqttSubscriber" Collapsed="true">
+    <Position X="21.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mqtt\MqttSubscriber.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Program" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.ServiceCollectionExtension">
+    <Position X="6.25" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAIAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>ServiceCollectionExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Registration.Startup">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAgABACAAAAAA=</HashCode>
+      <FileName>Startup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RSCD.DAL.RSCDDataEntryModel" Collapsed="true">
+    <Position X="26.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="RSCD.DAL.RSCDDataModel" Collapsed="true">
+    <Position X="26.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="RSCD.Mqtt.MqttPublisher" Collapsed="true">
+    <Position X="15.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="RSCD.MQTT.MqttClient" Collapsed="true">
+    <Position X="21.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="RSCD.DAL.MongoContext">
+    <Position X="24.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="Registration.DataAccess.Repository.IUsersCollection">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAQAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataAccess\Repository\IUsersCollection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="RSCD.DAL.IDataRepository&lt;Collection&gt;">
+    <Position X="18.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="MongoDB.Driver.IMongoCollection&lt;TDocument&gt;" Collapsed="true">
+    <Position X="21.5" Y="3" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="RSCD.BLL.IBusinessLogic">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
