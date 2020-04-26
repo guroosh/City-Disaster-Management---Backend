@@ -9,6 +9,7 @@ namespace Disaster.Model.DB
 {
     public class ReportedDisaster : RSCDDataEntryModel
     {
+        public string DisasterType { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string ReportedBy { get; set; } // who reported it
@@ -17,6 +18,7 @@ namespace Disaster.Model.DB
         public string VerifiedBy { get; set; } // 
         public string VerifiedTime { get; set; }
         public bool IsInfoTrue { get; set; } //
+        public bool IsVerfied { get; set; }
         public string ScaleOfDisaster { get; set; } // high, medium, low
         public bool MedicalAssistanceRequired { get; set; }
         public bool TrafficPoliceAssistanceRequired { get; set; }
@@ -29,6 +31,6 @@ namespace Disaster.Model.DB
         public string ClosedTime { get; set; }
 
         //routes
-        public List<MapRoute> FireRoute { get; set; }
+        public MapRoute[][] ExitEntryRoutes { get; set; }
     }
 }

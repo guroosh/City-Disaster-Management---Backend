@@ -2,6 +2,7 @@
 using Disaster.Model.DB;
 using RSCD.BLL;
 using RSCD.Helper;
+using RSCD.Model.Custom;
 using RSCD.Model.Custom.MinimalDetails;
 using RSCD.Model.Message;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Disaster.BusinessLogic
 {
-    public class Users_BL : IBusinessLogic
+    public class Users_BL 
     {
         private readonly IUsersCollection _usersCollection;
         public Users_BL(IUsersCollection usersCollection)
@@ -19,11 +20,10 @@ namespace Disaster.BusinessLogic
             _usersCollection = usersCollection;
         }
 
-        public async Task<bool> CreateAsync(object request)
+        public async Task<bool> CreateAsync(UserDetailMessage request)
         {
-            UserDetailMessage request_ = (UserDetailMessage)request;
             var copier = new ClassValueCopier();
-            UsersDetail users = copier.ConvertAndCopy<UsersDetail, UserDetailMessage>(request_);
+            UsersDetail users = copier.ConvertAndCopy<UsersDetail, UserDetailMessage>(request);
             bool result = await _usersCollection.AddAsync(users);
             return result;
         }
@@ -34,19 +34,17 @@ namespace Disaster.BusinessLogic
         }
 
 
-        public async Task<object> GetDocumentAsync(object request)
+        public async Task<Name> GetUserName(object request)
         {
-            string request_ = (string)request;
-            UsersDetail user = await _usersCollection.GetAsync(request_);
-            var copier = new ClassValueCopier();
-
-            if (user.IsCommonUser)
+            try
             {
-                return copier.ConvertAndCopy<CommonUserDetails_minimal, UsersDetail>(user);
+                string request_ = (string)request;
+                UsersDetail user = await _usersCollection.GetAsync(request_);
+                return user.Name;
             }
-            else
+            catch
             {
-                return copier.ConvertAndCopy<AdminUserDetails_minimal, UsersDetail>(user);
+                return new Name();
             }
         }
 

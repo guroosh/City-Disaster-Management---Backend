@@ -18,6 +18,7 @@ namespace RSCD.Model.Custom.MinimalDetails
     {
         public string ReferenceCode { get; set; }
         public Name Name { get; set; }
+        public string BadgeId { get; set; }
         public string EmailId { get; set; }
         public string Department { get; set; }
     }

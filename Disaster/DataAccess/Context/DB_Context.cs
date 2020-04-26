@@ -12,15 +12,15 @@ namespace Disaster.DataAccess.Context
         {
             get
             {
-                return _database.GetCollection<ReportedDisaster>("reportedDisasterCollection");
+                return _database.GetCollection<ReportedDisaster>("ReportedDisasterCollection");
             }
         }
 
-        public IMongoCollection<ReportedDisaster> UsersDetailCollection
+        public IMongoCollection<UsersDetail> UsersDetailCollection
         {
             get
             {
-                return _database.GetCollection<ReportedDisaster>("UsersDetailCollection");
+                return _database.GetCollection<UsersDetail>("UsersDetailCollection");
             }
         }
 

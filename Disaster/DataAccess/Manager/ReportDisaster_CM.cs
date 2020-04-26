@@ -52,9 +52,22 @@ namespace Disaster.DataAccess.Manager
             throw new NotImplementedException();
         }
 
-        public Task<List<ReportedDisaster>> GetAllAsync(string getDocs = "active")
+        public async Task<List<ReportedDisaster>> GetAllAsync(string getDocs = "active")
         {
-            throw new NotImplementedException();
+            try
+            {
+                return (getDocs.ToLower()) switch
+                {
+                    "active" => await _context.ReportedDisasterCollection.Find(doc => doc.IsActive == true).ToListAsync(),
+                    "inactive" => await _context.ReportedDisasterCollection.Find(doc => doc.IsActive == false).ToListAsync(),
+                    "all" => await _context.ReportedDisasterCollection.Find(_ => true).ToListAsync(),
+                    _ => throw new Exception(string.Format("the case {0} is not implemented", getDocs)),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<ReportedDisaster> GetAsync(string id)

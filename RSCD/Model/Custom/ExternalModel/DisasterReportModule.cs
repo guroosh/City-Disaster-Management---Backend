@@ -10,23 +10,25 @@ namespace RSCD.Model.Custom.ExternalModel
     {
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public CommonUserDetails_minimal ReportedBy { get; set; } // who reported it
+        public Name ReportedBy { get; set; } // who reported it
+        public string ReportedId { get; set; }
         public string ReportedTime { get; set; }
         public double Radius { get; set; } // circumference of the disaster
-        public AdminUserDetails_minimal VerifiedBy { get; set; } // 
+        public Name VerifiedBy { get; set; } // 
+        public string VerifiedId { get; set; }
         public string VerifiedTime { get; set; }
         public bool IsInfoTrue { get; set; } //
         public string ScaleOfDisaster { get; set; } // high, medium, low
         public bool MedicalAssistanceRequired { get; set; }
         public bool TrafficPoliceAssistanceRequired { get; set; }
         public bool FireBrigadeAssistanceRequired { get; set; }
-        // to be checked and removed if nessary
-        public string OtherResponseTeamRequired { get; set; }
+
         public bool IsClosed { get; set; }
         public string CloseddBy { get; set; }
         public string ClosedTime { get; set; }
 
         //routes
+        public List<MapRoute> FireRoute { get; set; }
 
     }
 }

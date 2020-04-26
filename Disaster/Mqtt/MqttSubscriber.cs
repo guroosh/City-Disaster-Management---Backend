@@ -12,6 +12,7 @@ using RSCD.Model.Configration;
 using RSCD.MQTT;
 using Newtonsoft.Json;
 using Disaster.Model.API;
+using RSCD.Model.Message;
 
 namespace Disaster.Mqtt
 {
@@ -29,7 +30,7 @@ namespace Disaster.Mqtt
 
                 try
                 {
-                    if (topic == "RSCD/Disaster/Verfied")
+                    if (topic == "RSCD/Message/Disaster/Verfied")
                     {
                         using (IServiceScope scope = serviceProvider.CreateScope())
                         {
@@ -37,6 +38,16 @@ namespace Disaster.Mqtt
                             var bl = scope.ServiceProvider.GetRequiredService<DisasterReport_BL>();
                             var disasterdData = JsonConvert.DeserializeObject<VerifiedDisasterRequest>(data);
                             var result = bl.UpdateDocumentAsync(disasterdData);
+                        }
+                    }
+                    else if(topic == "RSCD/Message/Registration/userCreated")
+                    {
+                        using (IServiceScope scope = serviceProvider.CreateScope())
+                        {
+                            // pass it to the handler class
+                            var bl = scope.ServiceProvider.GetRequiredService<Users_BL>();
+                            var disasterdData = JsonConvert.DeserializeObject<UserDetailMessage>(data);
+                            var result = bl.CreateAsync(disasterdData);
                         }
                     }
                 }

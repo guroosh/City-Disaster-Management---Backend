@@ -1,5 +1,7 @@
-﻿using Disaster.DataAccess.Repository;
+﻿using Disaster.DataAccess.Context;
+using Disaster.DataAccess.Repository;
 using Disaster.Model.DB;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,29 @@ namespace Disaster.DataAccess.Manager
 {
     public class UsersDetail_CM : IUsersCollection
     {
-        public Task<bool> AddAsync(UsersDetail document)
+
+        private readonly DB_Context _context;
+
+        public UsersDetail_CM(DB_Context context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<bool> AddAsync(UsersDetail document)
+        {
+            try
+            {
+                Console.WriteLine(document);
+                document.CreatedAt = DateTime.Now.ToString();
+                document.LastUpdatedAt = "";
+                document.IsActive = true;
+                await _context.UsersDetailCollection.InsertOneAsync(document);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw ex;
+            }
         }
 
         public Task<bool> DeleteAsync(string id, string userCode, string reason = "")
@@ -24,9 +46,16 @@ namespace Disaster.DataAccess.Manager
             throw new NotImplementedException();
         }
 
-        public Task<UsersDetail> GetAsync(string id)
+        public async Task<UsersDetail> GetAsync(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context.UsersDetailCollection.Find(doc => doc.ReferenceCode == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Task<bool> UpdateAsync(UsersDetail document)
