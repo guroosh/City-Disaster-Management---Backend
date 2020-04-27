@@ -17,7 +17,7 @@ namespace Disaster.Model.API
 
     public class VerifyDisasterRequest
     {
-        public string ReferenceId { get; set; }
+        public string ReferenceCode { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string Landmark { get; set; }

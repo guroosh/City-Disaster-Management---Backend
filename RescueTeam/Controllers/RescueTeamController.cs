@@ -11,7 +11,7 @@ using RSCD.Models.API;
 
 namespace RescueTeam.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class RescueTeamController : ControllerBase
     {

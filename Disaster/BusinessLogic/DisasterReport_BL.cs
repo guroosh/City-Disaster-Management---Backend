@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using RSCD.Models.API;
 using RSCD.Model.Custom.MinimalDetails;
 using RSCD.Model.Custom.ExternalModel;
+using RSCD.Model.Message;
 
 namespace Disaster.BusinessLogic
 {
@@ -123,9 +124,9 @@ namespace Disaster.BusinessLogic
 
             if (result && newDisaster.IsInfoTrue)
             {
-                VerifiedDisasterRequest verifiedDisaster = copier.ConvertAndCopy<VerifiedDisasterRequest, ReportedDisaster>(newDisaster);
+                VerifiedDisasterMessage verifiedDisaster = copier.ConvertAndCopy<VerifiedDisasterMessage, ReportedDisaster>(newDisaster);
                 string data = JsonConvert.SerializeObject(verifiedDisaster);
-                await Mqtt.MqttPublish("RSCD/Server/Disaster/Verified", data);
+                await Mqtt.MqttPublish("RSCD/Message/Disaster/Verified", data);
             }
             return result;
         }

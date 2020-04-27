@@ -21,6 +21,6 @@ namespace RSCD.Model.Message
         public bool TrafficPoliceAssistanceRequired { get; set; }
         public bool FireBrigadeAssistanceRequired { get; set; }
         public string OtherResponseTeamRequired { get; set; }
-        public List<MapRoute> FireRoute { get; set; }
+        public MapRoute[][] ExitEntryRoutes { get; set; }
     }
 }

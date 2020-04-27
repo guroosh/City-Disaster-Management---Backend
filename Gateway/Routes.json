@@ -18,6 +18,11 @@
       "endpoint": "rs",
       "key": "MzgzNmYwMWM4NDM3MTgxN2Q2YjViODMxOTkxZjE5MzNmMTdkYTgyNTUwYmQyMjY3YjY3ZmMzNjI2M2E0MzNkMQ==",
       "url": "http://localhost:7763"
+    },
+    {
+      "endpoint": "rt",
+      "key": "MzgzNmYwMWM4NDM3MTgxN2Q2YjViODMxOTkxZjE5MzNmMTdkYTgyNTUwYmQyMjY3YjY3ZmMzNjI2M2E0MzNkMQ==",
+      "url": "http://localhost:7764"
     }
   ],
   "viewRoutes": [

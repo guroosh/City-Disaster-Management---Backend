@@ -28,7 +28,7 @@ namespace RSCD.Model.Custom.ExternalModel
         public string ClosedTime { get; set; }
 
         //routes
-        public List<MapRoute> FireRoute { get; set; }
+        public MapRoute[][] FireRoute { get; set; }
 
     }
 }

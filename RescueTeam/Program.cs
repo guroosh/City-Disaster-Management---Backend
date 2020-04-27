@@ -22,7 +22,7 @@ namespace RescueTeam
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                    .ConfigureKestrel((context, options) => options.ListenLocalhost(7763, protocolOptions => protocolOptions.Protocols = HttpProtocols.Http1AndHttp2));
+                    .ConfigureKestrel((context, options) => options.ListenLocalhost(7764, protocolOptions => protocolOptions.Protocols = HttpProtocols.Http1AndHttp2));
 
                 });
     }

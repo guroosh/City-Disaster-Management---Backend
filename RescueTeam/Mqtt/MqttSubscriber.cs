@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using MQTTnet.Client.Receiving;
 using RSCD.MQTT;
 using Microsoft.Extensions.Hosting;
+using RSCD.Model.Message;
 
 namespace RescueTeam.Mqtt
 {
@@ -34,16 +35,27 @@ namespace RescueTeam.Mqtt
 
                 try
                 {
-                    if (topic == "RSCD/RescueTeam/AllocationTeam")
+                    if (topic == "RSCD/Message/Disaster/Verified")
                     {
                         using (IServiceScope scope = serviceProvider.CreateScope())
                         {
                             // pass it to the handler class
                             var bl = scope.ServiceProvider.GetRequiredService<RescueTeam_BL>();
-                            //var rescueTeamData = Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceAllocation>(data);
-                            //var result = bl.ResourceAllocationAsync(""k);
+                            var rescueTeamData = Newtonsoft.Json.JsonConvert.DeserializeObject<VerifiedDisasterMessage>(data);
+                            bl.ResourceAllocationAsync(rescueTeamData);
                         }
                     }
+                    else if (topic == "RSCD/Message/Registration/userCreated")
+                    {
+                        using (IServiceScope scope = serviceProvider.CreateScope())
+                        {
+                            // pass it to the handler class
+                            var bl = scope.ServiceProvider.GetRequiredService<RescueTeam_BL>();
+                            var rescueTeamData = Newtonsoft.Json.JsonConvert.DeserializeObject<UserDetailMessage>(data);
+                            var result = bl.CreateAsync(rescueTeamData);
+                        }
+                    }
+                    //RSCD / Message / Registration / userCreated
                 }
                 catch
                 {

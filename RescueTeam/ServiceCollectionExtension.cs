@@ -20,9 +20,9 @@ namespace RescueTeam
         {
             services.Configure<Mqtt_Settings>(options =>
             {
-                options.ClientId = configuration.GetSection("AuthConfiguration:IssuedTo").Value;
-                options.Host = configuration.GetSection("AuthConfiguration:IssuedTo").Value;
-                options.SuscribeTopic = configuration.GetSection("AuthConfiguration:IssuedTo").Value;
+                options.ClientId = configuration.GetSection("Mqtt:ClientId").Value;
+                options.Host = configuration.GetSection("Mqtt:Host").Value;
+                options.SuscribeTopic = configuration.GetSection("Mqtt:SuscribeTopic").Value;
             });
             services.AddHostedService<MqttSubscriber>();
             services.AddScoped<MqttPublisher>();
